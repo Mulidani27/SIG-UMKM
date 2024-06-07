@@ -5,7 +5,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('template/assets/compiled/svg/logo.svg') }}" alt="Logo" srcset="">
+                        <img src="{{ asset('template/assets/compiled/png/logo1.png') }}" alt="Logo" srcset="" style="scale: 1.5;">
                     </a>
                 </div>
                 <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
@@ -92,8 +92,8 @@
                 {{-- <li class="sidebar-item {{ Request::is('data-kategori', 'create-kategori', 'kategori/*/edit') ? 'active' : '' }}"> --}}
                 <li class="sidebar-item {{ request()->is('data-kategori', 'create-kategori', 'kategori/*/edit') ? 'active' : '' }}">    
                     <a href="{{ route('kategori') }}" class='sidebar-link'>
-                        <i class="bi bi-tags-fill"></i>
-                        <span>Kategori</span>
+                        <i class="bi bi-map-fill"></i>
+                        <span>Kategori Wilayah</span>
                     </a>
                 </li>
                 <li class="sidebar-title">Informasi</li>

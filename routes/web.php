@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingController::class, 'index']);
 Route::get('/landing', [LandingController::class, 'index'])->name('landing');
 
-Route::get('/', [DashboardController::class, 'index']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/login',[LoginController::class, 'index'])->name('login');
 Route::get('/lupapw',[LupapwController::class, 'index'])->name('lupapw');
