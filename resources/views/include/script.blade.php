@@ -1,4 +1,10 @@
 {{-- Tabel DataTables --}}
+@if (session('error'))
+@php
+  dump(session('error'));
+@endphp
+@endif
+
 <script
   src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -143,3 +149,6 @@ gsap.from(".team_img_wrapper img", {
   duration: 1,
 });
 </script>
+
+{{-- Slider --}}
+<script src="https://cdn.jsdelivr.net/npm/leaflet.zoomslider@0.7.0/L.Control.Zoomslider.min.js"></script>

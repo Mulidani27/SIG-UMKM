@@ -11,7 +11,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Tambah UMKM</li>
+                            <li class="breadcrumb-item active" aria-current="page">Tambah Data</li>
                         </ol>
                     </nav>
                 </div>
@@ -23,7 +23,7 @@
             <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Tambah UMKM</h4>
+                        <h4 class="card-title">Tambah Data</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -45,27 +45,13 @@
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Nama Usaha</label>
+                                            <label>Nama</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Usaha"
-                                                        id="nama_usaha" name="nama_usaha">
-                                                    <div class="form-control-icon">
-                                                        <i class="bi bi-buildings"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label>Nama Pemilik</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group has-icon-left">
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Pemilik"
-                                                        id="nama_pemilik" name="nama_pemilik">
+                                                    <input type="text" class="form-control" placeholder="Nama"
+                                                        id="nama" name="nama">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-person"></i>
                                                     </div>
@@ -73,14 +59,57 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label>Kategori</label>
+                                            <label>NIK</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <select name="kategori_id" id="kategori" class="form-control">
-                                                        @foreach($kategori as $kat)
-                                                            <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                                                    <input type="text" class="form-control" placeholder="NIK"
+                                                        id="nik" name="nik">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-person-vcard"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Nama Usaha</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Nama Usaha Jika Ada"
+                                                        id="nama_usaha" name="nama_usaha">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-person-circle"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Jenis Usaha</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Jenis Usaha"
+                                                        id="jenis_usaha" name="jenis_usaha">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-shop"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Kecamatan</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <select name="kecamatan_id" id="kecamatan" class="form-control">
+                                                        <option value="" selected disabled>Pilih Kecamatan</option>
+                                                        @foreach($kecamatan as $kec)
+                                                            <option value="{{ $kec->id }}">{{ $kec->nama_kecamatan }}</option>
                                                         @endforeach
                                                     </select>                                       
                                                     <div class="form-control-icon">
@@ -88,8 +117,38 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>                                        
+                                        </div>
+                                        
                                         <div class="col-md-4">
+                                            <label>Kelurahan</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <select name="kelurahan_id" id="kelurahan" class="form-control">
+                                                        <option value="" selected disabled>Pilih Kelurahan</option>
+                                                    </select>                                       
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-tags"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="address-horizontal-icon">Alamat</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Alamat" id="alamat" name="alamat">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-map"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @include('include.mappicker')
+                                        {{-- <div class="col-md-4">
                                             <label for="password-horizontal-icon">Latitude</label>
                                         </div>
                                         <div class="col-md-8">
@@ -114,29 +173,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div> --}}
+                                        <div class="col-md-4" style="margin-top: 12px">
+                                            <label for="contact-info-horizontal-icon">Kontak</label>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="contact-info-horizontal-icon">Phone</label>
-                                        </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-8" style="margin-top: 12px">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
                                                     <input type="number" class="form-control" placeholder="Phone" id="phone" name="phone">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-phone"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="address-horizontal-icon">Alamat</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group has-icon-left">
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Alamat" id="alamat" name="alamat">
-                                                    <div class="form-control-icon">
-                                                        <i class="bi bi-map"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -172,4 +218,29 @@
         </div>
     </section>
 </div>
+<!-- Tambahkan jQuery atau script AJAX -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#kecamatan').on('change', function () {
+            var kecamatanID = $(this).val();
+            if (kecamatanID) {
+                $.ajax({
+                    url: '/getKelurahan/' + kecamatanID,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#kelurahan').empty();
+                        $('#kelurahan').append('<option value="" disabled selected>Pilih Kelurahan</option>');
+                        $.each(data, function (key, value) {
+                            $('#kelurahan').append('<option value="' + value.id + '">' + value.nama_kelurahan + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#kelurahan').empty();
+            }
+        });
+    });
+</script>
 @endsection

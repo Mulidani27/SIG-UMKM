@@ -13,7 +13,7 @@
                             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Daftar Kategori UMKM</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Daftar Kategori Wilayah</li>
                                 </ol>
                             </nav>
                         </div>
@@ -23,15 +23,15 @@
             <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Daftar Kategori UMKM</h5>
-                        <a class="btn btn-primary" href="{{ route('kategori.create') }}">Tambah Kategori</a>
+                        <h5 class="card-title">Daftar Kategori Wilayah</h5>
+                        <a class="btn btn-primary" href="{{ route('kategori.create') }}">Tambah Data</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="myTable" class="display">
                                 <thead>
                                     <tr>
-                                        <th>Nama Kategori</th>
+                                        <th>Nama Kategori Wilayah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

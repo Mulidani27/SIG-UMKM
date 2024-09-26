@@ -5,13 +5,13 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Edit Kategori</h3>
+                    <h3>Edit Data Kategori</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit Kategori</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
                         </ol>
                     </nav>
                 </div>
@@ -23,7 +23,7 @@
             <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Edit Kategori</h4>
+                        <h4 class="card-title">Edit Data Kategori</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -39,7 +39,7 @@
                                 @endforeach
                             </div>
                             @endif 
-                            <form class="form form-horizontal" method="POST" action="{{ route('kategori.update', $kateg->id) }}">
+                            <form class="form form-horizontal" method="POST" action="{{ route('kategori.update', $kat->id) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-body">
@@ -50,18 +50,33 @@
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Kategori"
-                                                        id="nama_kategori" name="nama_kategori" value="{{ old('nama_kategori')??$kateg->nama_kategori }}">
+                                                    <input type="text" class="form-control" placeholder="Nama Kategori Wilayah"
+                                                        id="nama_kategori" name="nama_kategori" value="{{ old('nama_kategori', $kat->nama_kategori) }}">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-tags"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Input untuk GeoJSON -->
+                                        <div class="col-md-4">
+                                            <label>File GeoJSON</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <input type="file" class="form-control" name="geojson">
+                                                @if ($kat)
+                                                    <a href="{{ route('peta', ['kategori' => $kat->id]) }}" class="submenu-link" data-kategori="{{ $kat->id }}">
+                                                        {{ $kat->nama_kategori }}
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                         <div class="col-12 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
-                                            <button type="reset"
-                                                class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                            <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                         </div>
                                     </div>
                                 </div>

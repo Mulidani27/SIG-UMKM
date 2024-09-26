@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UMKMExport;
-use App\Models\Kategori;
+use App\Models\Kecamatan;
 
 class UMKMExportController extends Controller
 {
@@ -16,11 +16,11 @@ class UMKMExportController extends Controller
 
     public function exportByCategory(Request $request)
     {
-        $kategoriId = $request->input('kategori_id');
+        $kategoriId = $request->input('kecamatan_id');
         
-        // Ambil nama kategori berdasarkan ID
-        $kategori = Kategori::find($kategoriId);
-        $kategoriNama = $kategori ? $kategori->nama_kategori : 'unknown';
+        // Ambil nama kecamatan berdasarkan ID
+        $kecamatan = Kecamatan::find($kategoriId);
+        $kategoriNama = $kecamatan ? $kecamatan->nama_kategori : 'unknown';
         
         // Bentuk nama file ekspor
         $fileName = 'umkm_' . str_replace(' ', '_', strtolower($kategoriNama)) . '.xlsx';

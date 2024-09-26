@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Exports;
 
 use App\Models\UMKM;
@@ -27,26 +26,32 @@ class UMKMExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
+            'Nama',
+            'NIK',
             'Nama Usaha',
-            'Nama Pemilik',
-            'Kategori ID',
+            'Jenis Usaha',
+            'Kecamatan',
+            'Kelurahan',
+            'Alamat',
             'Latitude',
             'Longitude',
-            'Phone',
-            'Alamat'
+            'Phone'
         ];
     }
 
     public function map($umkm): array
     {
         return [
+            $umkm->nama,
+            $umkm->nik,
             $umkm->nama_usaha,
-            $umkm->nama_pemilik,
-            $umkm->kategori_id,
+            $umkm->jenis_usaha,
+            $umkm->kecamatan_id,
+            $umkm->kelurahan_id,
+            $umkm->alamat,
             $umkm->latitude,
             $umkm->longitude,
-            $umkm->phone,
-            $umkm->alamat,
+            $umkm->phone
         ];
     }
 }

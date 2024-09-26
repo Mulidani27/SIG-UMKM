@@ -1,4 +1,7 @@
 {{-- Dashboard --}}
+@php
+    use Illuminate\Support\Str;
+@endphp
 @extends('kerangka.master')
 @section('title', 'Dashboard')
 @section('content')
@@ -10,7 +13,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Pemetaan UMKM di Banjarmasin</h4>
+                            <h4 style="margin-bottom: -30px">Pemetaan UMKM di Banjarmasin</h4>
                         </div>
                         <div class="card-body">
                             @include('include.peta')
@@ -19,7 +22,7 @@
                 </div>
             </div>
             <!-- Jumlah UMKM Card -->
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -30,11 +33,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- Pengunjung dan Pesan Masuk Cards -->
             <div class="row">
                 <!-- Pengunjung Card -->
-                <div class="col-12 col-xl-4">
+                {{-- <div class="col-12 col-xl-4">
                     <div class="card">
                         <div class="card-header">
                             <h4>Jumlah Pengunjung</h4>
@@ -64,9 +67,9 @@
                             @endforeach
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!-- Pesan Masuk Card -->
-                <div class="col-12 col-xl-8">
+                {{-- <div class="col-12 col-xl-8">
                     <div class="card">
                         <div class="card-header">
                             <h4>Pesan Masuk</h4>
@@ -104,13 +107,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!-- Sidebar -->
         <div class="col-12 col-lg-3">
             <!-- Profile Card -->
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-body py-4 px-4">
                     <div class="d-flex align-items-center">
                         <div class="avatar avatar-xl">
@@ -122,9 +125,37 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+            <div class="col-6 col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Jumlah UMKM per Wilayah</h4>
+                    </div>
+                    <div class="card-body">
+                        @foreach ($kecamatan as $wilayah)
+                            <div class="row mb-3">
+                                <div class="col-7">
+                                    <div class="d-flex align-items-center">
+                                        <p class="mb-0 ms-3">{{ $wilayah->nama_kecamatan }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <p class="mb-0 text-end">
+                                        {{ $wilayah->umkms_count ?? 0 }}
+                                    </p>
+                                </div>
+                                <div class="col-12">
+                                    <div id="chart-{{ Str::slug($wilayah->nama_kecamatan) }}"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
+            
+            
             <!-- Pengguna Lainnya Card -->
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header">
                     <h4>Pengguna Lainnya</h4>
                 </div>
@@ -142,16 +173,16 @@
                         <a href="{{ route('pengguna') }}" class="btn btn-block btn-xl btn-outline-primary font-bold mt-3">Lihat Selengkapnya</a>
                     </div>
                 </div>
-            </div> 
+            </div>  --}}
             <!-- Profile Pengguna Card -->
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header">
                     <h4>Profile Pengguna</h4>
                 </div>
                 <div class="card-body">
                     <div id="chart-visitors-profile"></div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </section>
 </div>

@@ -13,7 +13,7 @@
                             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Daftar UMKM</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Daftar UMKM Sasirangan</li>
                                 </ol>
                             </nav>
                         </div>
@@ -23,9 +23,9 @@
             <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Daftar UMKM</h5>
+                        <h5 class="card-title">Daftar UMKM Sasirangan</h5>
                         <div class="d-flex">
-                            <a class="btn btn-primary me-2" href="{{ route('umkm.create') }}">Tambah UMKM</a>
+                            <a class="btn btn-primary me-2" href="{{ route('umkm.create') }}">Tambah Data</a>
                             <!-- Tombol untuk membuka modal -->
                             <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#importModal">
                                 Import Excel
@@ -60,16 +60,16 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="exportDropdown">
                                     <li><a class="dropdown-item" href="{{ route('umkm.export.all') }}">Semua Data</a></li>
-                                    <li><a class="dropdown-item" href="#">Berdasarkan Kategori &raquo;</a>
+                                    <li><a class="dropdown-item" href="#">Berdasarkan kecamatan &raquo;</a>
                                         <ul class="dropdown-menu dropdown-submenu">
                                             <li>
                                               <a class="dropdown-item" href="#">
                                                 <form action="{{ route('umkm.export.by.category') }}" method="GET">
                                                     @csrf
-                                                    <select name="kategori_id" class="form-select" aria-label="Pilih Kategori" onchange="this.form.submit()">
-                                                        <option selected disabled>Pilih Kategori</option>
-                                                        @foreach($kategori as $kat)
-                                                            <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                                                    <select name="kecamatan_id" class="form-select" aria-label="Pilih kecamatan" onchange="this.form.submit()">
+                                                        <option selected disabled>Pilih kecamatan</option>
+                                                        @foreach($kecamatan as $kec)
+                                                            <option value="{{ $kec->id }}">{{ $kec->nama_kecamatan }}</option>
                                                         @endforeach
                                                     </select>
                                                 </form>
@@ -86,13 +86,16 @@
                             <table id="myTable" class="display">
                                 <thead>
                                     <tr>
+                                        <th>Nama</th>
+                                        <th>NIK</th>
                                         <th>Nama Usaha</th>
-                                        <th>Nama Pemilik</th>
-                                        <th>Kategori</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
-                                        <th>Phone</th>
+                                        <th>Jenis Usaha</th>
                                         <th>Alamat</th>
+                                        <th>Kecamatan</th>
+                                        <th>Kelurahan</th>
+                                        {{-- <th>Latitude</th> --}}
+                                        {{-- <th>Longitude</th> --}}
+                                        <th>Kontak</th>
                                         {{-- <th>Foto</th> --}}
                                         <th>Aksi</th>
                                     </tr>
@@ -100,14 +103,16 @@
                                 <tbody>
                                     @foreach ($umkm as $um)
                                     <tr>
-                                        <td>{{ $um->nama_usaha }}</td>
-                                        <td>{{ $um->nama_pemilik }}</td>
-                                        <td>{{ $um->kategori->nama_kategori }}</td>
-                                        {{-- <td>{{ $um->kategori }}</td> --}}
-                                        <td>{{ $um->latitude }}</td>
-                                        <td>{{ $um->longitude }}</td>
-                                        <td>{{ $um->phone }}</td>
+                                        <td>{{ $um->nama}}</td>
+                                        <td>{{ $um->nik}}</td>
+                                        <td>{{ $um->nama_usaha}}</td>
+                                        <td>{{ $um->jenis_usaha}}</td>
                                         <td>{{ $um->alamat }}</td>
+                                        <td>{{ $um->kecamatan->nama_kecamatan }}</td>
+                                        <td>{{ $um->kelurahan->nama_kelurahan }}</td>
+                                        {{-- <td>{{ $um->latitude }}</td> --}}
+                                        {{-- <td>{{ $um->longitude }}</td> --}}
+                                        <td>{{ $um->phone }}</td>
                                         {{-- <td><img src="{{ asset('storage/' . $um->foto) }}" alt="Foto UMKM"></td> --}}
                                         <td>
                                             <div class="d-flex flex-wrap align-items-center">

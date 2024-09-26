@@ -1,5 +1,5 @@
 {{-- CSS --}}
-<link rel="shortcut icon" href="{{ asset('template/assets/compiled/svg/favicon.svg" type="image/x-icon') }}">
+<link rel="shortcut icon" href="{{ asset('template/assets/compiled/svg/favicon.svg') }}" type="image/x-icon">
 <link rel="shortcut icon" href="{{ asset('template/assets/compiled/svg/favicon.svg" type="image/png') }}">
 {{-- Tabel --}}
 <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/table-datatable.css') }}">
@@ -8,20 +8,22 @@
 <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app.css') }}">
 <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
 <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/iconly.css') }}">
-
+ 
 {{-- Panggil pustaka Leaflet --}}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
 <!-- Include Leaflet Control Layers CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-layers/dist/leaflet.control-layers.min.css"/>
 <style>
     #mapid {
-        height: 485px;
+        height: 500px;
         border-radius: 5px;
+        top: 0px;
+        z-index: 1;
     }
     #menu-container {
       position: absolute;
-      top: 90px;
-      left: 80px;
+      top: 70px;
+      left: 25px;
       background-color: white;
       padding: 10px;
       border-radius: 5px;
@@ -69,3 +71,7 @@
   display: block;
   }
 </style>
+
+<!-- Tambahkan Chart.js via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

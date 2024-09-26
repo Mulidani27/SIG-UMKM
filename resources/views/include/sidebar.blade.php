@@ -47,61 +47,67 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                {{-- <li class="sidebar-item {{ Request::is('dashboard') ? 'active' : '' }}"> --}}
                 <li class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}">
 
                     <a href="{{ route('dashboard') }}" class="sidebar-link">
                         <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
+                        <span>Beranda</span>
                     </a>
                 </li>
                 <li class="sidebar-item has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-geo-alt-fill"></i>
-                        <span>Peta</span>
+                        <span>Peta </span>
                     </a>
                     <ul class="submenu">
-                        {{-- @foreach ($kategori as $kat)
+                        @foreach ($kecamatan as $kec)
                             <li class="submenu-item">
-                                <a href="{{ route('peta', ['kategori' => $kat->id]) }}" class="submenu-link">{{ $kat->nama_kategori }}</a>
-                            </li>
-                        @endforeach --}}
-                        @foreach ($kategori as $kat)
-                            <li class="submenu-item">
-                                <a href="{{ route('peta', ['kategori' => $kat->id]) }}" class="submenu-link" data-kategori="{{ $kat->id }}">{{ $kat->nama_kategori }}</a>
+                                <a href="{{ route('peta', ['kecamatan' => $kec->id]) }}" class="submenu-link" data-kecamatan="{{ $kec->id }}">{{ $kec->nama_kecamatan }}</a>
                             </li>
                         @endforeach
 
                     </ul>
                 </li>
                 <li class="sidebar-title">Form &amp; Tabel</li>
-                {{-- <li class="sidebar-item {{ Request::is('data-umkm', 'create-umkm', 'umkm/*/edit' ) ? 'active' : '' }}"> --}}
                 <li class="sidebar-item {{ request()->is('data-umkm', 'create-umkm', 'umkm/*/edit') ? 'active' : '' }}">
                     <a href="{{ route('umkm') }}" class="sidebar-link">
                         <i class="bi bi-table"></i>
                         <span>Data UMKM</span>
                     </a>
                 </li>
-                {{-- <li class="sidebar-item {{ Request::is('data-pengguna', 'create-pengguna', 'pengguna/*/edit') ? 'active' : '' }}"> --}}
-                <li class="sidebar-item {{ request()->is('data-pengguna', 'create-pengguna', 'pengguna/*/edit') ? 'active' : '' }}">
-                    <a href="{{ route('pengguna') }}" class="sidebar-link">
+                <li class="sidebar-item {{ request()->is('data-user', 'create-user', 'user/*/edit') ? 'active' : '' }}">
+                    <a href="{{ route('user') }}" class="sidebar-link">
                         <i class="bi bi-people-fill"></i>
-                        <span>Pengguna</span>
+                        <span>Akun</span>
                     </a>
                 </li>
-                {{-- <li class="sidebar-item {{ Request::is('data-kategori', 'create-kategori', 'kategori/*/edit') ? 'active' : '' }}"> --}}
-                <li class="sidebar-item {{ request()->is('data-kategori', 'create-kategori', 'kategori/*/edit') ? 'active' : '' }}">    
-                    <a href="{{ route('kategori') }}" class='sidebar-link'>
+                <li class="sidebar-item {{ request()->is('data-kecamatan', 'create-kecamatan', 'kecamatan/*/edit') ? 'active' : '' }}">    
+                    <a href="{{ route('kecamatan') }}" class='sidebar-link'>
                         <i class="bi bi-map-fill"></i>
-                        <span>Kategori Wilayah</span>
+                        <span>Kecamatan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ request()->is('data-kelurahan', 'create-kelurahan', 'kelurahan/*/edit') ? 'active' : '' }}">    
+                    <a href="{{ route('kelurahan') }}" class='sidebar-link'>
+                        <i class="bi bi-map"></i>
+                        <span>Kelurahan</span>
                     </a>
                 </li>
                 <li class="sidebar-title">Informasi</li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
-                        <i class="bi bi-info-circle-fill"></i>
-                        <span>Panduan Pengguna</span>
+                    <a href="{{ route('statistik') }}" class="sidebar-link">
+                        <i class="bi bi-pie-chart-fill"></i>
+                        <span>Statistik</span>
                     </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>Logout</span>
+                    </a>
+                    <form id="logout-form" action="{{ route('actionlogout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
             </ul>
         </div>

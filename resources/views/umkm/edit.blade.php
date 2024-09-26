@@ -11,7 +11,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit UMKM</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
                         </ol>
                     </nav>
                 </div>
@@ -23,7 +23,7 @@
             <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Edit UMKM</h4>
+                        <h4 class="card-title">Edit Data</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -39,34 +39,19 @@
                                 @endforeach
                             </div>
                             @endif
-    
                             <form class="form form-horizontal" method="POST" action="{{ route('umkm.update', $umkm->id) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Nama Usaha</label>
+                                            <label>Nama</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Usaha"
-                                                        id="nama_usaha" name="nama_usaha" value="{{ old('nama_usaha')??$umkm->nama_usaha }}">
-                                                    <div class="form-control-icon">
-                                                        <i class="bi bi-buildings"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label>Nama Pemilik</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group has-icon-left">
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Pemilik"
-                                                        id="nama_pemilik" name="nama_pemilik" value="{{ old('nama_pemilik')??$umkm->nama_pemilik }}">
+                                                    <input type="text" class="form-control" placeholder="Nama"
+                                                        id="nama" name="nama" value="{{ old('nama')??$umkm->nama}}">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-person"></i>
                                                     </div>
@@ -74,14 +59,58 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label>Kategori</label>
+                                            <label>NIK</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <select name="kategori_id" id="kategori" class="form-control">
-                                                        @foreach($kategori as $kat)
-                                                            <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                                                    <input type="text" class="form-control" placeholder="NIK"
+                                                        id="nik" name="nik" value="{{ old('nik')??$umkm->nik }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-person-vcard"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Nama Usaha</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Nama Usaha Jika Ada"
+                                                        id="nama_usaha" name="nama_usaha" value="{{ old('nama_usaha')??$umkm->nama_usaha }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-person-circle"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Jenis Usaha</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Jenis Usaha"
+                                                        id="jenis_usaha" name="jenis_usaha" value="{{ old('jenis_usaha')??$umkm->jenis_usaha }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-shop"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Kecamatan</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <select name="kecamatan_id" id="kecamatan" class="form-control">
+                                                        @foreach($kecamatan as $kec)
+                                                            <option value="{{ $kec->id }}" {{ $umkm->kecamatan_id == $kec->id ? 'selected' : '' }}>
+                                                                {{ $kec->nama_kecamatan }}
+                                                            </option>
                                                         @endforeach
                                                     </select>                                       
                                                     <div class="form-control-icon">
@@ -91,6 +120,39 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
+                                            <label>Kelurahan</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <select name="kelurahan_id" id="kelurahan" class="form-control">
+                                                        @foreach($kelurahan as $kel)
+                                                            <option value="{{ $kel->id }}" {{ $umkm->kelurahan_id == $kel->id ? 'selected' : '' }}>
+                                                                {{ $kel->nama_kelurahan }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>                                       
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-tags"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="address-horizontal-icon">Alamat</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Alamat" id="alamat" name="alamat" value="{{ old('alamat')??$umkm->alamat }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-map"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @include('include.mappicker')
+                                        {{-- <div class="col-md-4">
                                             <label for="password-horizontal-icon">Latitude</label>
                                         </div>
                                         <div class="col-md-8">
@@ -115,29 +177,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div> --}}
+                                        <div class="col-md-4" style="margin-top: 12px">
+                                            <label for="contact-info-horizontal-icon">Kontak</label>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="contact-info-horizontal-icon">Phone</label>
-                                        </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-8" style="margin-top: 12px">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
                                                     <input type="number" class="form-control" placeholder="Phone" id="phone" name="phone" value="{{ old('phone')??$umkm->phone }}">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-phone"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="address-horizontal-icon">Alamat</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group has-icon-left">
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Alamat" id="alamat" name="alamat" value="{{ old('alamat')??$umkm->alamat }}">
-                                                    <div class="form-control-icon">
-                                                        <i class="bi bi-map"></i>
                                                     </div>
                                                 </div>
                                             </div>
