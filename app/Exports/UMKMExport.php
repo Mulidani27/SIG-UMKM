@@ -8,17 +8,17 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class UMKMExport implements FromCollection, WithHeadings, WithMapping
 {
-    protected $kategoriId;
+    protected $kecamatanId;
 
-    public function __construct($kategoriId = null)
+    public function __construct($kecamatanId = null)
     {
-        $this->kategoriId = $kategoriId;
+        $this->kecamatanId = $kecamatanId;
     }
 
     public function collection()
     {
-        if ($this->kategoriId) {
-            return UMKM::where('kategori_id', $this->kategoriId)->get();
+        if ($this->kecamatanId) {
+            return UMKM::where('kecamatan_id', $this->kecamatanId)->get();
         }
         return UMKM::all();
     }
