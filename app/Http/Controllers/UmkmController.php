@@ -175,15 +175,10 @@ class UmkmController extends Controller
 
         return true;
     }
+    
     public function getKelurahan($kecamatan_id)
     {
         $kelurahan = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
-        
-        // Jika tidak ada kelurahan, kembalikan array kosong
-        if ($kelurahan->isEmpty()) {
-            return response()->json([]);
-        }
-        
         return response()->json($kelurahan);
     }
 

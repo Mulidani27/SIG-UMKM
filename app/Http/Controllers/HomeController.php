@@ -22,12 +22,12 @@ class KecamatanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama_kategori' => 'required|string',
+            'nama_kecamatan' => 'required|string',
             'geojson' => 'nullable|file|mimes:json', // Validasi file GeoJSON (opsional)
         ]);
 
         // Periksa apakah kecamatan sudah ada dalam database
-        $existingCategory = kecamatan::where('nama_kategori', $validatedData['nama_kategori'])->first();
+        $existingCategory = kecamatan::where('nama_kecamatan', $validatedData['nama_kecamatan'])->first();
 
         // Jika kecamatan sudah ada, kembalikan pemberitahuan
         if ($existingCategory) {
@@ -36,7 +36,7 @@ class KecamatanController extends Controller
 
         // Jika kecamatan belum ada, buat kecamatan baru
         $kecamatan = new kecamatan();
-        $kecamatan->nama_kategori = $validatedData['nama_kategori'];
+        $kecamatan->nama_kecamatan = $validatedData['nama_kecamatan'];
 
         // Cek apakah ada file GeoJSON baru yang di-upload
         if ($request->hasFile('geojson')) {
@@ -72,22 +72,22 @@ class KecamatanController extends Controller
     public function edit($id)
     {
         $kecamatan = kecamatan::all();
-        $kat = kecamatan::findOrFail($id);
-        return view('kecamatan.edit', compact('kecamatan', 'kat')); // Mengirim $kat ke view
+        $kec = kecamatan::findOrFail($id);
+        return view('kecamatan.edit', compact('kecamatan', 'kec')); // Mengirim $kec ke view
     }
 
     public function update(Request $request, $id)
     {
         // Validasi input
         $validatedData = $request->validate([
-            'nama_kategori' => 'string|required',
+            'nama_kecamatan' => 'string|required',
         ]);
 
         // Cari kecamatan berdasarkan ID yang dikirimkan
         $kecamatan = kecamatan::findOrFail($id);
 
         // Cek apakah ada kecamatan lain dengan nama yang sama, kecuali kecamatan saat ini
-        $existingCategory = kecamatan::where('nama_kategori', $validatedData['nama_kategori'])
+        $existingCategory = kecamatan::where('nama_kecamatan', $validatedData['nama_kecamatan'])
                                     ->where('id', '!=', $kecamatan->id)
                                     ->first();
 
@@ -96,8 +96,8 @@ class KecamatanController extends Controller
             return back()->withInput()->with('failed', 'kecamatan ini sudah ada.');
         }
 
-        // Update nama_kategori
-        $kecamatan->nama_kategori = $validatedData['nama_kategori'];
+        // Update nama_kecamatan
+        $kecamatan->nama_kecamatan = $validatedData['nama_kecamatan'];
 
         // Cek apakah ada file GeoJSON baru yang di-upload
         if ($request->hasFile('geojson')) {
@@ -141,7 +141,7 @@ class KecamatanController extends Controller
         ];
 
         // Periksa apakah kecamatan ini adalah kecamatan default
-        if (in_array($kecamatan->nama_kategori, $defaultCategories)) {
+        if (in_array($kecamatan->nama_kecamatan, $defaultCategories)) {
             return redirect()->route('kecamatan')->with('failed', 'kecamatan default tidak dapat dihapus.');
         }
 

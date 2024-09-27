@@ -63,6 +63,7 @@
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
                                                     <select name="kecamatan_id" id="kecamatan" class="form-control">
+                                                        <option value="" selected disabled>Pilih Kecamatan</option>
                                                         @foreach($kecamatan as $kec)
                                                             <option value="{{ $kec->id }}">{{ $kec->nama_kecamatan }}</option>
                                                         @endforeach

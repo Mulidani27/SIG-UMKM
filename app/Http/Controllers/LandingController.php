@@ -56,7 +56,6 @@ class LandingController extends Controller
         return view('landing.landingumkm', compact('umkms', 'dataUmkmPerKecamatan', 'kecamatan', 'totalUmkm', 'isEmpty'));
     }
 
-
     public function showUmkmDetail($id)
     {
         $kecamatan = Kecamatan::all();

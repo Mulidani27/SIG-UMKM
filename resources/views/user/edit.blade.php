@@ -79,13 +79,13 @@
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="password" class="form-control" placeholder="Password" id="password" name="password" value="{{ old('password')??$user->password }}">
+                                                    <input type="password" class="form-control" placeholder="Password" id="password" name="password">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-lock"></i>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <div class="col-md-4">
                                             <label for="contact-info-horizontal-icon">Phone</label>
                                         </div>

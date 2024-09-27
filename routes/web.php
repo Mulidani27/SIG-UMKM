@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/umkm/{umkm}/update', [UmkmController::class, 'update'])->name('umkm.update');
     Route::delete('/umkm/{umkm}', [UmkmController::class, 'destroy'])->name('umkm.destroy');
     Route::get('/umkm/{umkm}', [UmkmController::class, 'show'])->name('umkm.show');
-    Route::get('/getKelurahan/{kecamatan_id}', [UmkmController::class, 'getKelurahan']);
+    Route::get('/kelurahan/{kecamatan_id}', [UmkmController::class, 'getKelurahan']);
    
     Route::get('/data-kecamatan', [KecamatanController::class, 'index'])->name('kecamatan');
     Route::get('/kecamatan/{kecamatanId}', [KecamatanController::class, 'showKecamatanMap']);

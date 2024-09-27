@@ -221,24 +221,25 @@
 <!-- Tambahkan jQuery atau script AJAX -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#kecamatan').on('change', function () {
-            var kecamatanID = $(this).val();
-            if (kecamatanID) {
+    $(document).ready(function() {
+        $('#kecamatan').change(function() {
+            var kecamatan_id = $(this).val();
+            if(kecamatan_id) {
                 $.ajax({
-                    url: '/getKelurahan/' + kecamatanID,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
+                    url: '/kelurahan/' + kecamatan_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
                         $('#kelurahan').empty();
-                        $('#kelurahan').append('<option value="" disabled selected>Pilih Kelurahan</option>');
-                        $.each(data, function (key, value) {
-                            $('#kelurahan').append('<option value="' + value.id + '">' + value.nama_kelurahan + '</option>');
+                        $('#kelurahan').append('<option value="" selected disabled>Pilih Kelurahan</option>');
+                        $.each(data, function(key, value) {
+                            $('#kelurahan').append('<option value="'+ value.id +'">'+ value.nama_kelurahan +'</option>');
                         });
                     }
                 });
             } else {
                 $('#kelurahan').empty();
+                $('#kelurahan').append('<option value="" selected disabled>Pilih Kelurahan</option>');
             }
         });
     });
