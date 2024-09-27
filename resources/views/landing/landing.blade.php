@@ -67,6 +67,12 @@
             padding: 5px;
             border-radius: 5px;
         }
+        @media only screen and (max-width: 768px) {
+            div[style*="padding: 40px"] {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
     </style>
 </head>
 <body>

@@ -71,6 +71,14 @@
   display: block;
   }
 </style>
+<style>
+  @media only screen and (max-width: 768px) {
+            div[style*="padding: 40px"] {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+</style>
 
 <!-- Tambahkan Chart.js via CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
