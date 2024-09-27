@@ -120,18 +120,15 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label>Kelurahan</label>
+                                            <label for="kelurahan">Kelurahan</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
                                                     <select name="kelurahan_id" id="kelurahan" class="form-control">
-                                                        @foreach($kelurahan as $kel)
-                                                            <option value="{{ $kel->id }}" {{ $umkm->kelurahan_id == $kel->id ? 'selected' : '' }}>
-                                                                {{ $kel->nama_kelurahan }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>                                       
+                                                        <option value="" selected disabled>Pilih Kelurahan</option>
+                                                        <!-- Kelurahan yang sesuai dengan kecamatan terpilih akan dimuat di sini -->
+                                                    </select>
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-tags"></i>
                                                     </div>
@@ -219,4 +216,45 @@
         </div>
     </section>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var selectedKelurahanID = {{ $umkm->kelurahan_id ?? 'null' }}; // ID kelurahan yang sudah dipilih sebelumnya
+        // Panggil fungsi untuk memuat kelurahan berdasarkan kecamatan yang dipilih
+        var kecamatanID = $('#kecamatan').val();
+        if (kecamatanID) {
+            loadKelurahan(kecamatanID, selectedKelurahanID);
+        }
+
+        // Event listener ketika kecamatan diubah
+        $('#kecamatan').on('change', function() {
+            var kecamatanID = $(this).val();
+            loadKelurahan(kecamatanID, null); // Set null saat kecamatan berubah agar kelurahan tidak auto-terpilih
+        });
+
+        // Fungsi untuk memuat kelurahan berdasarkan kecamatan
+        function loadKelurahan(kecamatanID, selectedKelurahanID) {
+            $.ajax({
+                url: '/kelurahan/' + kecamatanID,
+                method: 'GET',
+                success: function(data) {
+                    var $kelurahanSelect = $('#kelurahan');
+                    $kelurahanSelect.empty(); // Hapus opsi yang ada
+
+                    // Tambahkan opsi default
+                    $kelurahanSelect.append('<option value="" selected disabled>Pilih Kelurahan</option>');
+
+                    // Tambahkan opsi kelurahan dari server
+                    $.each(data, function(index, kelurahan) {
+                        var isSelected = selectedKelurahanID && kelurahan.id == selectedKelurahanID ? 'selected' : '';
+                        $kelurahanSelect.append('<option value="' + kelurahan.id + '" ' + isSelected + '>' + kelurahan.nama_kelurahan + '</option>');
+                    });
+                },
+                error: function(xhr) {
+                    console.error('Error fetching kelurahan:', xhr);
+                }
+            });
+        }
+    });
+</script>
 @endsection
