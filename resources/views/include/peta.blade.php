@@ -100,6 +100,21 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(map);
 
+            // Google Maps Layers
+            var googleLayers = {
+                "Streets": L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] }),
+                "Hybrid": L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] }),
+                "Satellite": L.tileLayer('http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] })
+            };
+
+            // Menambahkan Layer Control
+            L.control.layers({
+                "OpenStreetMap": initialTileLayer,
+                "Google Streets": googleLayers.Streets,
+                "Google Hybrid": googleLayers.Hybrid,
+                "Google Satellite": googleLayers.Satellite
+            }).addTo(map);
+
             // Set batas maksimum (max bounds) untuk Banjarmasin
             var southWest = L.latLng(-3.3821391999999260, 114.5219479000001002);
             var northEast = L.latLng(-3.2672272999999450, 114.6595898000000489);
