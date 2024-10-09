@@ -16,7 +16,7 @@
           height: 670px;
         }
         #menu {
-          max-height: 300px;
+          max-height: 200px;
           overflow-y: auto;
         }
        .submenupeta {
@@ -92,7 +92,7 @@
                                 <a class="nav-link active me-3" aria-current="page" href="{{ route('landing') }}"><i class="bi bi-house-fill"></i> Beranda</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link me-3" href="{{ route('landing.landingumkm') }}"><i class="bi bi-table"></i> Data UMKM</a>
+                                <a class="nav-link me-3" href="{{ route('landing.landingumkm') }}"><i class="bi bi-table"></i> UMKM</a>
                             </li>
                             <li class="nav-item dropdown me-3">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -106,6 +106,7 @@
                                     @endforeach
                                 </div>
                             </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link me-3" href="https://www.instagram.com/diskopumkerbanjarmasin?igsh=MWh6cjBnOTd2OXRkbQ=="><i class="bi bi-chat-left-text-fill"></i> Kontak</a>
                             </li>
@@ -140,10 +141,9 @@
                     <div class="card-body">                                         
                         <div id="mapid">
                             <div id="menu-container">
-                                <h6>Pilih: <i id="menu-toggle" class="bi bi-chevron-down"></i></h6>
+                                <h6>Tampilkan <i id="menu-toggle" class="bi bi-caret-down-fill"></i></h6>
                                 <div id="menu" class="border rounded p-3">
                                     <!-- Wilayah Checkbox Menu -->
-                                    <label><b> Kelurahan</b></label><br>
                                     @foreach($kelurahan as $kel)
                                         @if($selectedKecamatan && $kel->kecamatan_id == $selectedKecamatan->id)
                                             @if($kel->geojson_path) <!-- Hanya jika ada geojson_path -->
@@ -155,16 +155,22 @@
                                                 <label>{{ $kel->nama_kelurahan }} (GeoJSON tidak tersedia)</label><br>
                                             @endif
                                         @endif
-                                    @endforeach  
-                                    <label><b>Tampilkan</b></label><br>
+                                    @endforeach
+                                    @if(!$selectedKecamatan)
+                                        <label>
+                                            <input type="checkbox" id="toggle-layer" data-geojson-url="/geospasial/kota_banjarmasin.geojson"> Kota Banjarmasin
+                                        </label><br>
+                                    @endif                   
+                                </div>                          
+                                <div id="umkm-grid-container" class="border rounded p-3 mt-2">
                                     <label>
-                                        <input type="checkbox" id="toggle-layer" data-geojson-url="/geospasial/kota_banjarmasin.geojson"> Kota Banjarmasin
+                                        <input type="checkbox" class="umkmCheckbox" id="toggle-umkm-markers"> Penanda UMKM
                                     </label><br>
                                     <label>
-                                    <input type="checkbox" class="umkmCheckbox" id="toggle-umkm-markers"> Penanda UMKM
+                                        <input type="checkbox" class="umkmCheckbox" id="toggle-grid"> Tampilkan Grid
                                     </label>
                                 </div>
-                            </div>
+                            </div>                 
                             <div id="zoom-slider">
                                 <input type="range" id="zoomRange" min="13" max="19" step="0.1" value="{{ $zoomLevel }}"><br>
                                 <input type="number" id="zoomInput" min="13" max="19" step="0.1" value="{{ $zoomLevel }}" style="width: 50px;">
@@ -263,8 +269,87 @@
             zoomRange.addEventListener('mousedown', disableMapDrag);
             zoomRange.addEventListener('mouseup', enableMapDrag);
     
+            // Variabel untuk menyimpan garis grid
+            window.gridLines = [];
+
+            // Fungsi untuk menggambar grid
+            function drawInteractiveGrid() {
+                // Hapus grid yang ada
+                if (window.gridLines.length) {
+                    window.gridLines.forEach(function(line) {
+                        map.removeLayer(line);
+                    });
+                }
+
+                window.gridLines = []; // Inisialisasi array untuk menyimpan garis grid
+
+                var gridSize = 0.05 / Math.pow(2, map.getZoom() - 12); // Ukuran grid
+
+                var bounds = map.getBounds(); // Mendapatkan batas peta saat ini
+
+                // Menggambar garis horizontal
+                for (var lat = Math.floor(bounds.getSouth() / gridSize) * gridSize; lat < bounds.getNorth(); lat += gridSize) {
+                    var line = L.polyline([[lat, bounds.getWest()], [lat, bounds.getEast()]], { color: 'red', weight: 1 }).addTo(map);
+                    line.bindTooltip("Latitude: " + lat.toFixed(5), { permanent: true, direction: 'top' });
+                    
+                    line.on('mouseover', function(e) {
+                        this.openTooltip();
+                    });
+                    
+                    line.on('mouseout', function(e) {
+                        this.closeTooltip();
+                    });
+
+                    window.gridLines.push(line); // Simpan garis ke array
+                }
+                
+                // Menggambar garis vertikal
+                for (var lng = Math.floor(bounds.getWest() / gridSize) * gridSize; lng < bounds.getEast(); lng += gridSize) {
+                    var line = L.polyline([[bounds.getSouth(), lng], [bounds.getNorth(), lng]], { color: 'red', weight: 1 }).addTo(map);
+                    line.bindTooltip("Longitude: " + lng.toFixed(5), { permanent: true, direction: 'right' });
+                    
+                    line.on('mouseover', function(e) {
+                        this.openTooltip();
+                    });
+                    
+                    line.on('mouseout', function(e) {
+                        this.closeTooltip();
+                    });
+
+                    window.gridLines.push(line); // Simpan garis ke array
+                }
+            }
+
+            // Event listener untuk toggle grid
+            document.getElementById('toggle-grid').addEventListener('change', function() {
+                if (this.checked) {
+                    drawInteractiveGrid(); // Gambar grid jika checkbox dicentang
+                } else {
+                    // Hapus grid jika checkbox tidak dicentang
+                    if (window.gridLines.length) {
+                        window.gridLines.forEach(function(line) {
+                            map.removeLayer(line);
+                        });
+                        window.gridLines = []; // Kosongkan array garis grid
+                    }
+                }
+            });
+
+            // Event listener untuk memperbarui grid saat peta dipindahkan atau di-zoom
+            map.on('moveend', function() {
+                if (document.getElementById('toggle-grid').checked) {
+                    drawInteractiveGrid(); // Gambar ulang grid jika checkbox dicentang
+                }
+            });
+
+            map.on('zoomend', function() {
+                if (document.getElementById('toggle-grid').checked) {
+                    drawInteractiveGrid(); // Gambar ulang grid jika checkbox dicentang
+                }
+            });
+
             // Daftar warna utama
-            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+            const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
             function getRandomColor(excludeColors) {
                 const filteredColors = colors.filter(color => !excludeColors.includes(color));
                 return filteredColors[Math.floor(Math.random() * filteredColors.length)];
@@ -324,7 +409,7 @@
             @foreach($umkms as $umkm)
                 @if(!is_null($umkm->latitude) && !is_null($umkm->longitude))
                     var marker = L.marker([{{ $umkm->latitude }}, {{ $umkm->longitude }}])
-                        .bindPopup("<b>Nama:</b> {{ $umkm->nama }}<br><b>Jenis Usaha:</b> {{ $umkm->jenis_usaha }}<br><b>Alamat:</b> {{ $umkm->alamat }}<br><b>Kecamatan:</b> {{ $umkm->kecamatan->nama_kecamatan }}");
+                        .bindPopup("<b>Nama:</b> {{ $umkm->nama }}<br><b>Jenis Usaha:</b> {{ $umkm->jenis_usaha }}<br><b>Alamat:</b> {{ $umkm->alamat }}<br><b>Kecamatan:</b> {{ $umkm->kecamatan->nama_kecamatan }}<br><b>Kelurahan:</b> {{ $umkm->kelurahan->nama_kelurahan }}");
                     marker.options.title = "{{ $umkm->nama }}"; // Properti pencarian
                     markersLayer.addLayer(marker); // Tambahkan ke layer marker
                 @endif
@@ -458,23 +543,20 @@
                                         });
                                     }
                                 });
-
                                 // Menyimpan informasi warna pada layer
                                 newLayer.eachLayer(function (layer) {
                                     layer.feature.properties.color = layer.options.style.color;
                                 });
-
                                 newLayer.options.geojsonPath = geojsonPath;
                                 geoJsonLayers.push(newLayer);
                                 newLayer.addTo(map);
-
                                 // Zoom ke batas layer GeoJSON
-                                var geojsonBounds = newLayer.getBounds();
-                                if (geojsonBounds.isValid()) {
-                                    map.fitBounds(geojsonBounds);
-                                } else {
-                                    console.log("GeoJSON bounds are not valid.");
-                                }
+                                // var geojsonBounds = newLayer.getBounds();
+                                // if (geojsonBounds.isValid()) {
+                                //     map.fitBounds(geojsonBounds);
+                                // } else {
+                                //     console.log("GeoJSON bounds are not valid.");
+                                // }
                             })
                             .catch(error => console.log('Error loading GeoJSON:', error));
                     } else {
@@ -518,7 +600,7 @@
 
                                 // Tentukan warna untuk fitur ini
                                 const color = getRandomColor(adjacentColors);
-                                return { color: color, weight: 2 }; // Sesuaikan styling jika perlu
+                                return { color: color, weight: 3 }; // Sesuaikan styling jika perlu
                             },
                             onEachFeature: function (feature, layer) {
                                 // Tambahkan popup pada setiap fitur
@@ -566,18 +648,49 @@
 
     {{-- Dropdown Kecamatan --}}
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+            const umkmGridContainer = document.getElementById('umkm-grid-container');
+    
+            // Fungsi untuk toggle visibilitas menu
+            menuToggle.addEventListener('click', function() {
+                menu.classList.toggle('d-none'); // Menyembunyikan atau menampilkan menu
+                // Menyembunyikan umkm-grid-container jika menu disembunyikan
+                if (menu.classList.contains('d-none')) {
+                    umkmGridContainer.classList.add('d-none');
+                } else {
+                    umkmGridContainer.classList.remove('d-none');
+                }
+            });
+        });
+    </script>
+    <script>
         document.getElementById('menu-toggle').addEventListener('click', function() {
-        var menu = document.getElementById('menu');
-        var toggleIcon = document.getElementById('menu-toggle');
-        if (menu.classList.contains('hidden')) {
-            menu.classList.remove('hidden');
-            toggleIcon.classList.remove('bi-chevron-down');
-            toggleIcon.classList.add('bi-chevron-up');
-        } else {
-            menu.classList.add('hidden');
-            toggleIcon.classList.remove('bi-chevron-up');
-            toggleIcon.classList.add('bi-chevron-down');
-        }
+            var menu = document.getElementById('menu');
+            var toggleIcon = document.getElementById('menu-toggle');
+      
+            // Toggle visibility of the menu
+            menu.classList.toggle('hidden');
+      
+            // Toggle the icon based on the menu visibility
+            if (menu.classList.contains('hidden')) {
+                toggleIcon.classList.remove('bi-caret-up-fill');
+                toggleIcon.classList.add('bi-caret-down-fill');
+            } else {
+                toggleIcon.classList.remove('bi-caret-down-fill');
+                toggleIcon.classList.add('bi-caret-up-fill');
+            }
+        });
+    </script>     
+    <script>
+        document.getElementById('toggle-umkm-markers').addEventListener('change', function() {
+            var kotaBanjarmasinCheckbox = document.getElementById('toggle-layer');
+            if (this.checked) {
+                kotaBanjarmasinCheckbox.checked = true; // Aktifkan checkbox Kota Banjarmasin
+            } else {
+                kotaBanjarmasinCheckbox.checked = false; // Nonaktifkan jika diinginkan
+            }
         });
     </script>
 

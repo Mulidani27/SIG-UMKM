@@ -1,5 +1,4 @@
 @extends('kerangka.master')
-
 @section('content')
 <div class="page-content">
     <section class="row">
@@ -52,16 +51,37 @@
 </div>
 
 <script>
-    // Bar Chart Configuration
+    // Bar Chart Configuration 
     var barOptions = {
         chart: {
             type: 'bar',
             toolbar: {
                 show: true,
                 tools: {
-                    download: true  // Enable export/download feature
+                    download: true
                 }
-            }
+            },
+            responsive: [{
+                breakpoint: 480, // Ketika ukuran layar kurang dari 480px
+                options: {
+                    chart: {
+                        width: '100%', // Lebar penuh pada layar kecil
+                        height: 300 // Tinggi yang disesuaikan untuk layar kecil
+                    },
+                    xaxis: {
+                        labels: {
+                            rotate: -90, // Putar label sumbu X agar tidak bertumpuk
+                            style: {
+                                fontSize: '10px' // Perkecil ukuran font untuk label
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }],
+            height: 350 // Tinggi default
         },
         series: [{
             name: 'Jumlah UMKM',
@@ -70,41 +90,41 @@
         xaxis: {
             categories: @json($dataUmkmPerKecamatan->pluck('nama_kecamatan'))
         }
-    }
+    };
     var barChart = new ApexCharts(document.querySelector("#chart"), barOptions);
     barChart.render();
+
     // Pie Chart Configuration
-    @if ($totalUmkm > 0)
+    var pieSeries = @json($dataUmkmPerKecamatan->pluck('jumlah')->map(function($jumlah) use ($totalUmkm) {
+        return $totalUmkm > 0 ? round(($jumlah / $totalUmkm) * 100, 2) : 0;
+    }));
     var pieOptions = {
         chart: {
             type: 'pie',
             toolbar: {
                 show: true,
                 tools: {
-                    download: true  // Enable export/download feature
+                    download: true
                 }
-            }
+            },
+            responsive: [{
+                breakpoint: 480, // Ketika ukuran layar kurang dari 480px
+                options: {
+                    chart: {
+                        width: '100%',
+                        height: 300 // Tinggi chart disesuaikan untuk layar kecil
+                    },
+                    legend: {
+                        position: 'bottom', // Pindahkan legenda ke bawah untuk layar kecil
+                        fontSize: '12px'
+                    }
+                }
+            }],
+            height: 350 // Tinggi default
         },
-        series: @json($dataUmkmPerKecamatan->pluck('jumlah')->map(function($jumlah) use ($totalUmkm) {
-            return round(($jumlah / $totalUmkm) * 100, 2);
-        })),
+        series: pieSeries,
         labels: @json($dataUmkmPerKecamatan->pluck('nama_kecamatan'))
-    }
-    @else
-    var pieOptions = {
-        chart: {
-            type: 'pie',
-            toolbar: {
-                show: true,
-                tools: {
-                    download: true  // Enable export/download feature
-                }
-            }
-        },
-        series: [100],  // Default to 100% for a single "No Data" slice
-        labels: ['No Data Available']
-    }
-    @endif
+    };
     var pieChart = new ApexCharts(document.querySelector("#pieChart"), pieOptions);
     pieChart.render();
 </script>

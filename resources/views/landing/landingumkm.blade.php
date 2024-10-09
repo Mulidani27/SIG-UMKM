@@ -16,43 +16,43 @@
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-          <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-sm" style="padding: 15px">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ route('landing') }}">
-                    <img src="{{ asset('template/assets/compiled/png/logo2.png') }}" alt="Logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link me-3" aria-current="page" href="{{ route('landing') }}"><i class="bi bi-house-fill"></i> Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active me-3" href="{{ route('landing.landingumkm') }}"><i class="bi bi-table"></i> Data UMKM</a>
-                        </li>
-                        <li class="nav-item dropdown me-3">
-                          <a class="nav-link dropdown-toggle" href="#" id="kategoriDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i class="bi bi-stack"></i> Wilayah
-                          </a>
-                          <div class="dropdown-menu" aria-labelledby="kategoriDropdown">
-                              @foreach ($kecamatan as $kec)
-                                  <a href="{{ route('landing', ['kecamatan' => $kec->id]) }}" class="dropdown-item submenu-link" data-kecamatan="{{ $kec->id }}">
-                                      {{ $kec->nama_kecamatan }}
-                                  </a>
-                              @endforeach
-                          </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link me-3" href="https://www.instagram.com/diskopumkerbanjarmasin?igsh=MWh6cjBnOTd2OXRkbQ=="><i class="bi bi-chat-left-text-fill"></i> Kontak</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link me-3" href="{{ route('dashboard') }}"><i class="bi bi-box-arrow-in-right"></i> Masuk</a>
-                        </li> 
-                    </ul>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-sm" style="padding: 15px">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ route('landing') }}">
+                        <img src="{{ asset('template/assets/compiled/png/logo2.png') }}" alt="Logo">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link me-3" aria-current="page" href="{{ route('landing') }}"><i class="bi bi-house-fill"></i> Beranda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active me-3" href="{{ route('landing.landingumkm') }}"><i class="bi bi-table"></i> Data UMKM</a>
+                            </li>
+                            <li class="nav-item dropdown me-3">
+                            <a class="nav-link dropdown-toggle" href="#" id="kategoriDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-stack"></i> Wilayah
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="kategoriDropdown">
+                                @foreach ($kecamatan as $kec)
+                                    <a href="{{ route('landing', ['kecamatan' => $kec->id]) }}" class="dropdown-item submenu-link" data-kecamatan="{{ $kec->id }}">
+                                        {{ $kec->nama_kecamatan }}
+                                    </a>
+                                @endforeach
+                            </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link me-3" href="https://www.instagram.com/diskopumkerbanjarmasin?igsh=MWh6cjBnOTd2OXRkbQ=="><i class="bi bi-chat-left-text-fill"></i> Kontak</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link me-3" href="{{ route('dashboard') }}"><i class="bi bi-box-arrow-in-right"></i> Masuk</a>
+                            </li> 
+                        </ul>
+                    </div>
                 </div>
-            </div>
             </nav>
             <div class="container">
                 <div class="card mt-4">
@@ -153,16 +153,37 @@
     </script>
 
 <script>
-    // Bar Chart Configuration
+    // Bar Chart Configuration 
     var barOptions = {
         chart: {
             type: 'bar',
             toolbar: {
                 show: true,
                 tools: {
-                    download: true  // Enable export/download feature
+                    download: true
                 }
-            }
+            },
+            responsive: [{
+                breakpoint: 480, // Ketika ukuran layar kurang dari 480px
+                options: {
+                    chart: {
+                        width: '100%', // Lebar penuh pada layar kecil
+                        height: 300 // Tinggi yang disesuaikan untuk layar kecil
+                    },
+                    xaxis: {
+                        labels: {
+                            rotate: -90, // Putar label sumbu X agar tidak bertumpuk
+                            style: {
+                                fontSize: '10px' // Perkecil ukuran font untuk label
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }],
+            height: 350 // Tinggi default
         },
         series: [{
             name: 'Jumlah UMKM',
@@ -171,8 +192,7 @@
         xaxis: {
             categories: @json($dataUmkmPerKecamatan->pluck('nama_kecamatan'))
         }
-    }
-
+    };
     var barChart = new ApexCharts(document.querySelector("#chart"), barOptions);
     barChart.render();
 
@@ -180,21 +200,33 @@
     var pieSeries = @json($dataUmkmPerKecamatan->pluck('jumlah')->map(function($jumlah) use ($totalUmkm) {
         return $totalUmkm > 0 ? round(($jumlah / $totalUmkm) * 100, 2) : 0;
     }));
-
     var pieOptions = {
         chart: {
             type: 'pie',
             toolbar: {
                 show: true,
                 tools: {
-                    download: true  // Enable export/download feature
+                    download: true
                 }
-            }
+            },
+            responsive: [{
+                breakpoint: 480, // Ketika ukuran layar kurang dari 480px
+                options: {
+                    chart: {
+                        width: '100%',
+                        height: 300 // Tinggi chart disesuaikan untuk layar kecil
+                    },
+                    legend: {
+                        position: 'bottom', // Pindahkan legenda ke bawah untuk layar kecil
+                        fontSize: '12px'
+                    }
+                }
+            }],
+            height: 350 // Tinggi default
         },
         series: pieSeries,
         labels: @json($dataUmkmPerKecamatan->pluck('nama_kecamatan'))
-    }
-
+    };
     var pieChart = new ApexCharts(document.querySelector("#pieChart"), pieOptions);
     pieChart.render();
 </script>

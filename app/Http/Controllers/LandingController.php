@@ -80,6 +80,6 @@ class LandingController extends Controller
         $centerCoordinates = [-3.315031756474848, 114.5925235326802];
         $zoomLevel = 13;
     
-        return view('landing.landing', compact('selectedKecamatan', 'kelurahan', 'centerCoordinates', 'zoomLevel'));
+        return view('landing.landingpeta', compact('selectedKecamatan', 'kelurahan', 'centerCoordinates', 'zoomLevel'));
     }
  }

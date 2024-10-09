@@ -57,7 +57,7 @@
                 <li class="sidebar-item has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-geo-alt-fill"></i>
-                        <span>Peta </span>
+                        <span>Wilayah </span>
                     </a>
                     <ul class="submenu">
                         @foreach ($kecamatan as $kec)
@@ -72,7 +72,7 @@
                 <li class="sidebar-item {{ request()->is('data-umkm', 'create-umkm', 'umkm/*/edit') ? 'active' : '' }}">
                     <a href="{{ route('umkm') }}" class="sidebar-link">
                         <i class="bi bi-table"></i>
-                        <span>Data UMKM</span>
+                        <span>UMKM</span>
                     </a>
                 </li>
                 <li class="sidebar-item {{ request()->is('data-user', 'create-user', 'user/*/edit') ? 'active' : '' }}">

@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::get('/kategori/{categoryId}', [LandingController::class, 'showCategoryMap']);
+Route::get('/kecamatan/{kecamatanId}', [LandingController::class, 'showKecamatanMap']);
 Route::get('/landing-umkm', [LandingController::class, 'showUmkmList'])->name('landing.landingumkm');
 Route::get('/detail-umkm/{id}', [LandingController::class, 'showUmkmDetail'])->name('landing.landingdetail');
 Route::get('/login', [LoginController::class, 'login'])->name('login');

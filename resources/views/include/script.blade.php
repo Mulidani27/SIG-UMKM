@@ -59,17 +59,20 @@
 {{-- Dropdown Kecamatan --}}
 <script>
   document.getElementById('menu-toggle').addEventListener('click', function() {
-    var menu = document.getElementById('menu');
-    var toggleIcon = document.getElementById('menu-toggle');
-    if (menu.classList.contains('hidden')) {
-      menu.classList.remove('hidden');
-      toggleIcon.classList.remove('bi-chevron-down');
-      toggleIcon.classList.add('bi-chevron-up');
-    } else {
-      menu.classList.add('hidden');
-      toggleIcon.classList.remove('bi-chevron-up');
-      toggleIcon.classList.add('bi-chevron-down');
-    }
+      var menu = document.getElementById('menu');
+      var toggleIcon = document.getElementById('menu-toggle');
+
+      // Toggle visibility of the menu
+      menu.classList.toggle('hidden');
+
+      // Toggle the icon based on the menu visibility
+      if (menu.classList.contains('hidden')) {
+          toggleIcon.classList.remove('bi-caret-up-fill');
+          toggleIcon.classList.add('bi-caret-down-fill');
+      } else {
+          toggleIcon.classList.remove('bi-caret-down-fill');
+          toggleIcon.classList.add('bi-caret-up-fill');
+      }
   });
 </script>
 
