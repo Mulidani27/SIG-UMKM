@@ -51,7 +51,7 @@
         <div class="container mt-4">
             <div id="menu-container">
                 <h6>Tampilkan <i id="menu-toggle" class="bi bi-caret-down-fill"></i></h6>
-                <div id="menu" class="border rounded p-3">
+                <div id="menu" class="border rounded p-3 scrollable-menu">
                     <!-- Wilayah Checkbox Menu -->
                     @foreach($kelurahan as $kel)
                         @if($selectedKecamatan && $kel->kecamatan_id == $selectedKecamatan->id)
@@ -66,11 +66,11 @@
                         @endif
                     @endforeach
                     @if(!$selectedKecamatan)
-                    <label>
-                        <input type="checkbox" id="toggle-layer" data-geojson-url="/geospasial/kota_banjarmasin.geojson"> Kota Banjarmasin
-                    </label><br>
-                    @endif
-                </div>
+                        <label>
+                            <input type="checkbox" id="toggle-layer" data-geojson-url="/geospasial/kota_banjarmasin.geojson"> Kota Banjarmasin
+                        </label><br>
+                    @endif                   
+                </div>                          
                 <div id="umkm-grid-container" class="border rounded p-3 mt-2">
                     <label>
                         <input type="checkbox" class="umkmCheckbox" id="toggle-umkm-markers"> Penanda UMKM
@@ -90,7 +90,8 @@
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
-  
+    <!-- Impor SweetAlert2 CSS dan JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Inisialisasi Peta
@@ -119,6 +120,12 @@
                 "Google Streets": googleLayers.Streets,
                 "Google Hybrid": googleLayers.Hybrid,
                 "Google Satellite": googleLayers.Satellite
+            }).addTo(map);
+
+            // Menambahkan kontrol skala
+            L.control.scale({
+                imperial: false, // Set ke true jika ingin menampilkan dalam satuan imperial (mil)
+                metric: true     // Set ke true jika ingin menampilkan dalam satuan metrik (meter/kilometer)
             }).addTo(map);
 
             // Set batas maksimum (max bounds) untuk Banjarmasin
@@ -309,17 +316,166 @@
             })
             .catch(error => console.log('Error loading GeoJSON:', error));
             
+            // Variabel global untuk kontrol routing
+            var routingControl = null;
+            var isRoutingActive = false; // Status untuk melacak apakah rute aktif
+
             // Layer untuk marker UMKM
             var markersLayer = new L.LayerGroup();
+
             // Menambahkan marker UMKM
             @foreach($umkms as $umkm)
                 @if(!is_null($umkm->latitude) && !is_null($umkm->longitude))
                     var marker = L.marker([{{ $umkm->latitude }}, {{ $umkm->longitude }}])
-                        .bindPopup("<b>Nama:</b> {{ $umkm->nama }}<br><b>Jenis Usaha:</b> {{ $umkm->jenis_usaha }}<br><b>Alamat:</b> {{ $umkm->alamat }}<br><b>Kecamatan:</b> {{ $umkm->kecamatan->nama_kecamatan }}<br><b>Kelurahan:</b> {{ $umkm->kelurahan->nama_kelurahan }}");
+                        .bindPopup(
+                            "<b>Nama:</b> {{ $umkm->nama }}<br>" +
+                            "<b>Nama Usaha:</b> {{ $umkm->nama_usaha }}<br>" +
+                            "<b>Jenis Usaha:</b> {{ $umkm->jenis_usaha }}<br>" +
+                            "<b>Alamat:</b> {{ $umkm->alamat }}<br>" +
+                            "<b>Kecamatan:</b> {{ $umkm->kecamatan->nama_kecamatan }}<br>" +
+                            "<b>Kelurahan:</b> {{ $umkm->kelurahan->nama_kelurahan }}<br>" +
+                            "<button onclick='showRouteOptions({{ $umkm->latitude }}, {{ $umkm->longitude }})'>Rute ke UMKM</button>"
+                        );
                     marker.options.title = "{{ $umkm->nama }}"; // Properti pencarian
                     markersLayer.addLayer(marker); // Tambahkan ke layer marker
                 @endif
             @endforeach
+
+            // Fungsi untuk menampilkan opsi rute
+            window.showRouteOptions = function(lat, lon) {
+                // Cek jika tombol rute tidak aktif
+                if (!isRoutingActive) {
+                    Swal.fire('Rute tidak aktif!', 'Aktifkan rute terlebih dahulu.', 'info');
+                    return; // Keluar dari fungsi jika rute tidak aktif
+                }
+
+                Swal.fire({
+                    title: 'Pilih Lokasi',
+                    text: "Apakah Anda ingin menggunakan lokasi otomatis atau manual?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Otomatis',
+                    cancelButtonText: 'Manual'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lokasi otomatis menggunakan GPS
+                        map.locate({ setView: true, maxZoom: 16 });
+                        map.on('locationfound', function(e) {
+                            var userLat = e.latitude;
+                            var userLon = e.longitude;
+
+                            // Cek jika ada rute sebelumnya dan hapus
+                            if (routingControl) {
+                                map.removeControl(routingControl);
+                                routingControl = null;
+                            }
+
+                            // Tambahkan rute baru
+                            routingControl = L.Routing.control({
+                                waypoints: [
+                                    L.latLng(userLat, userLon),
+                                    L.latLng(lat, lon)
+                                ],
+                                routeWhileDragging: true,
+                                lineOptions: {
+                                    styles: [
+                                        { color: 'red', opacity: 1, weight: 5 } // Menentukan warna dan ketebalan garis
+                                    ]
+                                }
+                            }).addTo(map);
+                        });
+                    } else {
+                        // Lokasi manual melalui klik pada peta
+                        if (isRoutingActive) { // Hanya tambahkan event listener jika rute aktif
+                            map.on('click', function(e) {
+                                var clickedLat = e.latlng.lat;
+                                var clickedLon = e.latlng.lng;
+
+                                Swal.fire({
+                                    title: 'Konfirmasi Koordinat',
+                                    text: `Apakah Anda ingin menggunakan koordinat berikut?\nLatitude: ${clickedLat}\nLongitude: ${clickedLon}`,
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Ya',
+                                    cancelButtonText: 'Tidak'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Cek jika ada rute sebelumnya dan hapus
+                                        if (routingControl) {
+                                            map.removeControl(routingControl);
+                                            routingControl = null;
+                                        }
+
+                                        // Tambahkan rute baru
+                                        routingControl = L.Routing.control({
+                                            waypoints: [
+                                                L.latLng(clickedLat, clickedLon),
+                                                L.latLng(lat, lon)
+                                            ],
+                                            routeWhileDragging: true,
+                                            lineOptions: {
+                                                styles: [
+                                                    { color: 'red', opacity: 1, weight: 5 } // Menentukan warna dan ketebalan garis
+                                                ]
+                                            }
+                                        }).addTo(map);
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            };
+
+            // Fungsi untuk menghapus rute
+            window.removeRoute = function() {
+                if (routingControl) {
+                    map.removeControl(routingControl); // Hapus kontrol rute dari peta
+                    routingControl = null; // Reset kontrol rute setelah dihapus
+                    Swal.fire('Rute dihapus!', '', 'success');
+                } else {
+                    Swal.fire('Tidak ada rute untuk dihapus!', '', 'info');
+                }
+            };
+
+            // Menangani kesalahan lokasi pengguna
+            map.on('locationerror', function(e) {
+                alert("Tidak dapat menemukan lokasi Anda. Pastikan layanan lokasi diaktifkan.");
+            });
+
+            // Menambahkan event listener pada tombol "Aktifkan Rute"
+            document.getElementById('toggleRouting').addEventListener('click', function() {
+                isRoutingActive = !isRoutingActive; // Toggle status rute
+
+                if (isRoutingActive) {
+                    // Ubah tampilan tombol menjadi aktif
+                    this.classList.add('btn-success');
+                    this.classList.remove('btn-light');
+                    this.title = 'Rute Aktif';
+                    Swal.fire('Rute diaktifkan!', 'Anda sekarang dapat memilih rute.', 'success');
+
+                    // Aktifkan event listener klik pada peta
+                    map.on('click', function(e) {
+                        // Tidak ada implementasi di sini, hanya untuk menunjukkan bahwa peta dapat diklik.
+                        // Logic untuk menunjukkan konfirmasi koordinat akan ditangani di showRouteOptions.
+                    });
+                } else {
+                    // Ubah tampilan tombol menjadi non-aktif
+                    this.classList.add('btn-light');
+                    this.classList.remove('btn-success');
+                    this.title = 'Aktifkan Rute';
+                    removeRoute(); // Hapus rute jika dinonaktifkan
+                    Swal.fire('Rute dinonaktifkan!', 'Rute sebelumnya dihapus.', 'info');
+
+                    // Hapus event listener klik pada peta
+                    map.off('click');
+                }
+            });
+
+            // Event listener pada tombol "Hapus Rute"
+            document.getElementById('clearMap').addEventListener('click', function() {
+                removeRoute(); // Panggil fungsi removeRoute saat tombol diklik
+            });
     
             // Fungsi untuk menangani pencarian saat tombol 'Cari' ditekan
             document.getElementById('button-addon2').addEventListener('click', function() {
@@ -346,60 +502,6 @@
                 } else {
                     map.removeLayer(markersLayer); // Sembunyikan marker UMKM saat checkbox dinonaktifkan
                 }
-            });
-    
-            // Routing
-            var startMarker, endMarker;
-            var routeControl = null;
-            var routingActive = false;
-            map.on('click', function(e) {
-                if (routingActive) {
-                    if (!startMarker) {
-                        startMarker = L.marker(e.latlng, { draggable: true }).addTo(map)
-                            .bindPopup('Titik Awal').openPopup();
-                    } else if (!endMarker) {
-                        endMarker = L.marker(e.latlng, { draggable: true }).addTo(map)
-                            .bindPopup('Titik Akhir').openPopup();
-    
-                        routeControl = L.Routing.control({
-                            waypoints: [startMarker.getLatLng(), endMarker.getLatLng()],
-                            routeWhileDragging: true
-                        }).addTo(map);
-                    } else {
-                        map.removeLayer(startMarker);
-                        map.removeLayer(endMarker);
-                        if (routeControl) {
-                            map.removeControl(routeControl);
-                        }
-                        startMarker = L.marker(e.latlng, { draggable: true }).addTo(map)
-                            .bindPopup('Titik Awal').openPopup();
-                        endMarker = null;
-                    }
-                }
-            });
-            document.getElementById('toggleRouting').addEventListener('click', function() {
-                routingActive = !routingActive;
-                this.classList.toggle('active', routingActive);
-                if (!routingActive && routeControl) {
-                    map.removeControl(routeControl);
-                    routeControl = null;
-                }
-            });
-            document.getElementById('clearMap').addEventListener('click', function() {
-                if (startMarker) {
-                    map.removeLayer(startMarker);
-                    startMarker = null;
-                }
-                if (endMarker) { 
-                    map.removeLayer(endMarker);
-                    endMarker = null;
-                }
-                if (routeControl) {
-                    map.removeControl(routeControl);
-                    routeControl = null;
-                }
-                routingActive = false;
-                document.getElementById('toggleRouting').classList.remove('active');
             });
 
             // Array untuk menyimpan layer GeoJSON
@@ -570,13 +672,13 @@
         });
     </script>
     <script>
-        document.getElementById('toggle-umkm-markers').addEventListener('change', function() {
-            var kotaBanjarmasinCheckbox = document.getElementById('toggle-layer');
-            if (this.checked) {
-                kotaBanjarmasinCheckbox.checked = true; // Aktifkan checkbox Kota Banjarmasin
-            } else {
-                kotaBanjarmasinCheckbox.checked = false; // Nonaktifkan jika diinginkan
-            }
+        // Menambahkan event listener untuk menghentikan event scroll yang mempengaruhi peta
+        document.getElementById('menu').addEventListener('wheel', function(e) {
+            e.stopPropagation(); // Mencegah scroll dari event leaflet
+        });
+        // Untuk sentuhan pada perangkat mobile (touch event)
+        document.getElementById('menu').addEventListener('touchmove', function(e) {
+            e.stopPropagation(); // Mencegah swipe/touch dari menggerakkan peta
         });
     </script>
 </body>

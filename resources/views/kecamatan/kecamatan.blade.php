@@ -42,10 +42,10 @@
                                         <td>
                                             <div class="d-flex flex-wrap align-items-center">
                                                 <a class="btn btn-warning mx-1" href="{{ route('kecamatan.edit', $kec->id) }}">Update</a>
-                                                <form action="{{ route('kecamatan.destroy', $kec->id) }}" method="POST">
+                                                <form action="{{ route('kecamatan.destroy', $kec->id) }}" method="POST" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger mx-1">Delete</button>
+                                                    <button type="button" class="btn btn-danger mx-1 delete-button">Delete</button>
                                                 </form>
                                             </div>
                                         </td>
@@ -60,4 +60,22 @@
         </div>
     </section>
 </div>
+<script>
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.onclick = () => {
+            Swal.fire({
+                title: 'Konfirmasi Hapus',
+                text: "Apakah Anda yakin ingin menghapus data ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit();
+                }
+            });
+        };
+    });
+</script>
 @endsection

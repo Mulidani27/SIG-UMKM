@@ -2,6 +2,8 @@
 namespace App\Exports;
 
 use App\Models\Umkm;
+use App\Models\Kecamatan; // Model Kecamatan
+use App\Models\Kelurahan; // Model Kelurahan
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -41,13 +43,17 @@ class UMKMExport implements FromCollection, WithHeadings, WithMapping
 
     public function map($umkm): array
     {
+        // Mengambil nama kecamatan dan kelurahan berdasarkan id yang disimpan
+        $kecamatanName = Kecamatan::find($umkm->kecamatan_id)->nama_kecamatan ?? 'Tidak Diketahui';
+        $kelurahanName = Kelurahan::find($umkm->kelurahan_id)->nama_kelurahan ?? 'Tidak Diketahui';
+
         return [
             $umkm->nama,
             $umkm->nik,
             $umkm->nama_usaha,
             $umkm->jenis_usaha,
-            $umkm->kecamatan_id,
-            $umkm->kelurahan_id,
+            $kecamatanName, // Menggunakan nama_kecamatan
+            $kelurahanName, // Menggunakan nama_kelurahan
             $umkm->alamat,
             $umkm->latitude,
             $umkm->longitude,

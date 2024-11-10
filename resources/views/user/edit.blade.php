@@ -84,6 +84,7 @@
                                                         <i class="bi bi-lock"></i>
                                                     </div>
                                                 </div>
+                                                <small class="text-muted">Minimal 6 karakter</small>
                                             </div>
                                         </div>                                        
                                         <div class="col-md-4">

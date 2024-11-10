@@ -45,6 +45,10 @@
                                                     <label for="fileInput" class="form-label">Pilih File Excel</label>
                                                     <input type="file" class="form-control" id="fileInput" name="file" required>
                                                 </div>
+                                                <!-- Tombol untuk mengunduh file contoh -->
+                                                <div class="mb-3">
+                                                    <a href="{{ asset('uploads/Sampel Data Import.xlsx') }}" class="btn btn-info" download="contoh_import.xlsx">Unduh Contoh File</a>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -118,10 +122,10 @@
                                             <div class="d-flex flex-wrap align-items-center">
                                                 <a class="btn btn-info mx-1" href="{{ route('umkm.show', $um->id) }}">Detail</a>
                                                 <a class="btn btn-warning mx-1" href="{{ route('umkm.edit', $um->id) }}">Update</a>
-                                                <form action="{{ route('umkm.destroy', $um->id) }}" method="POST">
+                                                <form action="{{ route('umkm.destroy', $um->id) }}" method="POST" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger mx-1">Delete</button>
+                                                    <button type="button" class="btn btn-danger mx-1 delete-button">Delete</button>
                                                 </form>
                                             </div>
                                         </td>
@@ -136,4 +140,22 @@
         </div>
     </section>
 </div>
+<script>
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.onclick = () => {
+            Swal.fire({
+                title: 'Konfirmasi Hapus',
+                text: "Apakah Anda yakin ingin menghapus data ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit();
+                }
+            });
+        };
+    });
+</script>
 @endsection
