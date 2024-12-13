@@ -9,7 +9,7 @@ class Kecamatan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_kecamatan', 'geojson_path'];
+    protected $fillable = ['nama_kecamatan', 'geojson_path', 'latitude', 'longitude', 'batas_wilayah'];
 
     // Relasi ke Kelurahan
     public function kelurahans()

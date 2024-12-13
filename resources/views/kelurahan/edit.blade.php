@@ -23,7 +23,7 @@
             <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Edit Data kelurahan</h4>
+                        <h4 class="card-title">Edit Data Kelurahan</h4>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -44,13 +44,14 @@
                                 @method('PATCH')
                                 <div class="form-body">
                                     <div class="row">
+                                        <!-- Nama Kelurahan -->
                                         <div class="col-md-4">
                                             <label>Nama Kelurahan</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Kelurahan Wilayah"
+                                                    <input type="text" class="form-control" placeholder="Nama Kelurahan"
                                                         id="nama_kelurahan" name="nama_kelurahan" value="{{ old('nama_kelurahan', $kelurahan->nama_kelurahan) }}">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-tags"></i>
@@ -58,6 +59,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        <!-- Nama Kecamatan -->
                                         <div class="col-md-4">
                                             <label>Nama Kecamatan</label>
                                         </div>
@@ -77,21 +80,40 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Input untuk GeoJSON -->
+                                        
+                                        <!-- File GeoJSON -->
                                         <div class="col-md-4">
                                             <label>File GeoJSON</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <input type="file" class="form-control" name="geojson">
-                                                @if ($kelurahan)
-                                                    <a href="{{ route('peta', ['kelurahan' => $kelurahan->id]) }}" class="submenu-link" data-kelurahan="{{ $kelurahan->id }}">
-                                                        {{ $kelurahan->nama_kelurahan }}
-                                                    </a>
+                                                @if ($kelurahan->geojson_path)
+                                                    <p><a href="{{ asset('storage/' . $kelurahan->geojson_path) }}" target="_blank">Lihat GeoJSON</a></p>
                                                 @endif
                                             </div>
                                         </div>
 
+                                        <!-- Map Picker -->
+                                        @include('include.mappicker', ['model' => $kelurahan])
+
+                                        <!-- Keterangan -->
+                                        <div class="col-md-4" style="margin-top: 12px">
+                                            <label>Batas Wilayah</label>
+                                        </div>
+                                        <div class="col-md-8" style="margin-top: 12px">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Batas Wilayah"
+                                                        id="batas_wilayah" name="batas_wilayah" value="{{ old('batas_wilayah', $kelurahan->batas_wilayah) }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-border-style"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tombol Simpan -->
                                         <div class="col-12 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                             <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>

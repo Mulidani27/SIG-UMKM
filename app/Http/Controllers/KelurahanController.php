@@ -33,14 +33,20 @@ class KelurahanController extends Controller
     {
         $validatedData = $request->validate([
             'nama_kelurahan' => 'required|string|unique:kelurahans,nama_kelurahan',
-            'kecamatan_id' => 'nullable|exists:kecamatans,id',
-            'geojson' => 'nullable|file|mimes:json|max:2048', // Maksimal ukuran file 2MB
+            'kecamatan_id'   => 'nullable|exists:kecamatans,id',
+            'geojson'        => 'nullable|file|mimes:json|max:2048',
+            'latitude'       => 'nullable|numeric|between:-90,90',
+            'longitude'      => 'nullable|numeric|between:-180,180',
+            'batas_wilayah'  => 'nullable|string',
         ]);
 
         // Buat kelurahan baru
         $kelurahan = new Kelurahan();
         $kelurahan->nama_kelurahan = $validatedData['nama_kelurahan'];
         $kelurahan->kecamatan_id = $validatedData['kecamatan_id'] ?? null;
+        $kelurahan->latitude = $validatedData['latitude'];
+        $kelurahan->longitude = $validatedData['longitude'];
+        $kelurahan->batas_wilayah = $validatedData['batas_wilayah'];
 
         // Cek apakah ada file GeoJSON yang di-upload
         if ($request->hasFile('geojson')) {
@@ -66,13 +72,19 @@ class KelurahanController extends Controller
     {
         $validatedData = $request->validate([
             'nama_kelurahan' => 'required|string|unique:kelurahans,nama_kelurahan,' . $id,
-            'kecamatan_id' => 'nullable|exists:kecamatans,id',
-            'geojson' => 'nullable|file|mimes:json|max:2048',
+            'kecamatan_id'   => 'nullable|exists:kecamatans,id',
+            'geojson'        => 'nullable|file|mimes:json|max:2048',
+            'latitude'       => 'nullable|numeric|between:-90,90',
+            'longitude'      => 'nullable|numeric|between:-180,180',
+            'batas_wilayah'  => 'nullable|string',
         ]);
 
         $kelurahan = Kelurahan::findOrFail($id);
         $kelurahan->nama_kelurahan = $validatedData['nama_kelurahan'];
         $kelurahan->kecamatan_id = $validatedData['kecamatan_id'] ?? null;
+        $kelurahan->latitude = $validatedData['latitude'];
+        $kelurahan->longitude = $validatedData['longitude'];
+        $kelurahan->batas_wilayah = $validatedData['batas_wilayah'];
 
         // Cek apakah ada file GeoJSON baru yang di-upload
         if ($request->hasFile('geojson')) {

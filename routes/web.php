@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/kecamatan', [KecamatanController::class, 'store'])->name('kecamatan.store');
     Route::get('/kecamatan/{id}/edit', [KecamatanController::class, 'edit'])->name('kecamatan.edit');
     Route::patch('/kecamatan/{id}', [KecamatanController::class, 'update'])->name('kecamatan.update');
+    Route::get('/kecamatan/{kecamatan}', [KecamatanController::class, 'show'])->name('kecamatan.detail');
 
     Route::get('/data-kelurahan', [KelurahanController::class, 'index'])->name('kelurahan');
     Route::get('/kelurahan/{kelurahanId}', [KelurahanController::class, 'showKelurahanMap']);

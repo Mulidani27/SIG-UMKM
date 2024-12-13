@@ -33,6 +33,7 @@
                                     <tr>
                                         <th>Nama Kelurahan</th>
                                         <th>Nama Kecamatan</th>
+                                        <th>Batas Wilayah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -41,6 +42,7 @@
                                     <tr>
                                         <td>{{ $kel->nama_kelurahan }}</td>
                                         <td>{{ $kel->kecamatan->nama_kecamatan }}</td>
+                                        <td>{{ $kel->batas_wilayah }}</td>
                                         <td>
                                             <div class="d-flex flex-wrap align-items-center">
                                                 <a class="btn btn-warning mx-1" href="{{ route('kelurahan.edit', $kel->id) }}">Update</a>

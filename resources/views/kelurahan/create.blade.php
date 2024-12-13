@@ -51,7 +51,7 @@
                                                 <div class="position-relative">
                                                     <input type="text" class="form-control" placeholder="Nama Kelurahan" id="nama_kelurahan" name="nama_kelurahan" required>
                                                     <div class="form-control-icon">
-                                                        <i class="bi bi-tags"></i>
+                                                        <i class="bi bi-border-style"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,6 +80,22 @@
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <input type="file" class="form-control" name="geojson" accept=".geojson" required>
+                                            </div>
+                                        </div>
+
+                                        @include('include.mappicker')
+
+                                        <div class="col-md-4" style="margin-top: 12px">
+                                            <label>Batas Wilayah</label>
+                                        </div>
+                                        <div class="col-md-8" style="margin-top: 12px">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Batas Wilayah" id="batas_wilayah" name="batas_wilayah" required>
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-info-circle"></i>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-end">

@@ -22,7 +22,10 @@ class KecamatanController extends Controller
     {
         $validatedData = $request->validate([
             'nama_kecamatan' => 'required|string',
-            'geojson' => 'nullable|file|mimes:json', // Validasi file GeoJSON (opsional)
+            'geojson'        => 'nullable|file|mimes:json',
+            'latitude'       => 'nullable|numeric|between:-90,90',
+            'longitude'      => 'nullable|numeric|between:-180,180',
+            'batas_wilayah'  => 'nullable|string',
         ]);
 
         // Periksa apakah kecamatan sudah ada dalam database
@@ -36,6 +39,9 @@ class KecamatanController extends Controller
         // Jika kecamatan belum ada, buat kecamatan baru
         $kecamatan = new Kecamatan();
         $kecamatan->nama_kecamatan = $validatedData['nama_kecamatan'];
+        $kecamatan->latitude = $validatedData['latitude'];
+        $kecamatan->longitude = $validatedData['longitude'];
+        $kecamatan->batas_wilayah = $validatedData['batas_wilayah'];
 
         // Cek apakah ada file GeoJSON baru yang di-upload
         if ($request->hasFile('geojson')) {
@@ -80,6 +86,10 @@ class KecamatanController extends Controller
         // Validasi input
         $validatedData = $request->validate([
             'nama_kecamatan' => 'string|required',
+            'geojson'        => 'nullable|file|mimes:json',
+            'latitude'       => 'nullable|numeric|between:-90,90',
+            'longitude'      => 'nullable|numeric|between:-180,180',
+            'batas_wilayah'  => 'nullable|string',
         ]);
 
         // Cari kecamatan berdasarkan ID yang dikirimkan
@@ -97,6 +107,9 @@ class KecamatanController extends Controller
 
         // Update nama_kecamatan
         $kecamatan->nama_kecamatan = $validatedData['nama_kecamatan'];
+        $kecamatan->latitude = $validatedData['latitude'];
+        $kecamatan->longitude = $validatedData['longitude'];
+        $kecamatan->batas_wilayah = $validatedData['batas_wilayah'];
 
         // Cek apakah ada file GeoJSON baru yang di-upload
         if ($request->hasFile('geojson')) {
@@ -130,6 +143,11 @@ class KecamatanController extends Controller
         } else {
             return back()->withInput()->with('failed', 'Gagal memperbarui kecamatan. Silakan coba lagi.');
         }
+    }
+
+    public function show(Kecamatan $kecamatan)
+    {
+        return view('kecamatan.detail', compact('kecamatan'));
     }
 
     public function destroy(Kecamatan $kecamatan)

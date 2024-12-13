@@ -101,6 +101,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="{{ asset('uploads/Panduan Penggunaan SIG UMKM Sasirangan.pdf') }}" target="_blank" class="sidebar-link">
+                        <i class="bi bi-info-square-fill"></i>
+                        <span>Panduan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="#" class="sidebar-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="bi bi-box-arrow-left"></i>
                         <span>Logout</span>

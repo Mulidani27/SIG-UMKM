@@ -32,6 +32,7 @@
                                 <thead>
                                     <tr>
                                         <th>Nama Kecamatan</th>
+                                        <th>Batas Wilayah</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -39,8 +40,10 @@
                                     @foreach ($kecamatan as $kec)
                                     <tr>
                                         <td>{{ $kec->nama_kecamatan }}</td>
+                                        <td>{{ $kec->batas_wilayah }}</td>
                                         <td>
                                             <div class="d-flex flex-wrap align-items-center">
+                                                <a class="btn btn-info mx-1" href="{{ route('kecamatan.detail', $kec->id) }}">Detail</a>
                                                 <a class="btn btn-warning mx-1" href="{{ route('kecamatan.edit', $kec->id) }}">Update</a>
                                                 <form action="{{ route('kecamatan.destroy', $kec->id) }}" method="POST" class="delete-form">
                                                     @csrf

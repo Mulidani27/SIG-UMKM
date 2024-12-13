@@ -64,6 +64,22 @@
                                                 <input type="file" class="form-control" name="geojson" accept=".geojson" required>
                                             </div>
                                         </div>
+
+                                        @include('include.mappicker')
+
+                                        <div class="col-md-4" style="margin-top: 12px">
+                                            <label>Batas Wilayah</label>
+                                        </div>
+                                        <div class="col-md-8" style="margin-top: 12px">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Batas Wilayah" id="batas_wilayah" name="batas_wilayah" required>
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-border-style"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-12 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                             <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
