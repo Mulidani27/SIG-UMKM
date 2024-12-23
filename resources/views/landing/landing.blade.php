@@ -74,6 +74,17 @@
                 padding-right: 0 !important;
             }
         }
+        .compass {
+            position: absolute;
+            bottom: 10px; /* Jarak dari bawah peta */
+            right: 10px; /* Jarak dari kanan peta */
+            width: 80px; /* Ukuran kompas */
+            height: 80px;
+            background: url('{{ asset('image/kompas transparan.png') }}') no-repeat center center;
+            background-size: contain;
+            z-index: 500; /* Pastikan tampil di atas lapisan peta */
+            pointer-events: none; /* Agar tidak menghalangi interaksi dengan peta */
+        }
     </style>
 </head>
 <body>
@@ -189,7 +200,8 @@
                                 <input type="range" id="zoomRange" min="12" max="19" step="0.1" value="{{ $zoomLevel }}"><br>
                                 <input type="number" id="zoomInput" min="12" max="19" step="0.1" value="{{ $zoomLevel }}" style="width: 50px;">
                                 <span id="zoomValue">{{ $zoomLevel }}</span>
-                            </div>                       
+                            </div>
+                            <div class="compass"></div>
                         </div>
                     </div>
                 </div>
@@ -719,7 +731,7 @@
                                 routeWhileDragging: true,
                                 lineOptions: {
                                     styles: [
-                                        { color: 'red', opacity: 1, weight: 5 } // Menentukan warna dan ketebalan garis
+                                        { color: 'blue', opacity: 1, weight: 5 } // Menentukan warna dan ketebalan garis
                                     ]
                                 }
                             }).addTo(map);
@@ -755,7 +767,7 @@
                                             routeWhileDragging: true,
                                             lineOptions: {
                                                 styles: [
-                                                    { color: 'red', opacity: 1, weight: 5 } // Menentukan warna dan ketebalan garis
+                                                    { color: 'blue', opacity: 1, weight: 5 } // Menentukan warna dan ketebalan garis
                                                 ]
                                             }
                                         }).addTo(map);
