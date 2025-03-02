@@ -33,8 +33,8 @@
             position: absolute;
             bottom: 10px; /* Jarak dari bawah peta */
             right: 10px; /* Jarak dari kanan peta */
-            width: 80px; /* Ukuran kompas */
-            height: 80px;
+            width: 130px; /* Ukuran kompas */
+            height: 130px;
             background: url('{{ asset('image/kompas transparan.png') }}') no-repeat center center;
             background-size: contain;
             z-index: 500; /* Pastikan tampil di atas lapisan peta */
@@ -547,10 +547,48 @@
             // Layer untuk marker UMKM
             var markersLayer = new L.LayerGroup();
 
+            // Definisi ikon untuk kecamatan yang berbeda
+            var kecamatanIcons = {
+                "Banjarmasin Utara": L.icon({
+                    iconUrl: '/image/marker-icon-2x-red.png', // Ikon untuk Kecamatan 1
+                    iconSize: [25, 41], // Ukuran ikon
+                    iconAnchor: [12, 41], // Titik anchor
+                    popupAnchor: [1, -34], // Titik popup
+                }),
+                "Banjarmasin Selatan": L.icon({
+                    iconUrl: '/image/marker-icon-2x-violet.png', // Ikon untuk Kecamatan 2
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                }),
+                "Banjarmasin Tengah": L.icon({
+                    iconUrl: '/image/marker-icon-2x-green.png', // Ikon untuk Kecamatan 3
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                }),
+                "Banjarmasin Timur": L.icon({
+                    iconUrl: '/image/marker-icon-2x-brown.png', // Ikon untuk Kecamatan 3
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                }),
+                "Banjarmasin Barat": L.icon({
+                    iconUrl: '/image/marker-icon-2x-blue.png', // Ikon untuk Kecamatan 3
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                }),
+            };
+
             // Menambahkan marker UMKM
             @foreach($umkms as $umkm)
                 @if(!is_null($umkm->latitude) && !is_null($umkm->longitude))
-                    var marker = L.marker([{{ $umkm->latitude }}, {{ $umkm->longitude }}])
+                    // Pilih ikon berdasarkan kecamatan
+                    var kecamatanName = "{{ $umkm->kecamatan->nama_kecamatan }}";
+                    var selectedIcon = kecamatanIcons[kecamatanName] || L.Icon.Default; // Default jika tidak ada kecocokan
+
+                    var marker = L.marker([{{ $umkm->latitude }}, {{ $umkm->longitude }}], { icon: selectedIcon })
                         .bindPopup(
                             "<b>Nama:</b> {{ $umkm->nama }}<br>" +
                             "<b>Nama Usaha:</b> {{ $umkm->nama_usaha }}<br>" +
@@ -573,7 +611,7 @@
                 @if(!is_null($kecamatan->latitude) && !is_null($kecamatan->longitude))
                     var marker = L.marker([{{ $kecamatan->latitude }}, {{ $kecamatan->longitude }}])
                         .bindPopup(
-                            "<b>Kantor:</b> {{ $kecamatan->nama_kecamatan }}"
+                            "<b>Kantor Kecamatan:</b> {{ $kecamatan->nama_kecamatan }}"
                         );
                     markerskecLayer.addLayer(marker); // Tambahkan ke layer marker
                 @endif
@@ -587,7 +625,7 @@
                 @if(!is_null($kelurahan->latitude) && !is_null($kelurahan->longitude))
                     var marker = L.marker([{{ $kelurahan->latitude }}, {{ $kelurahan->longitude }}])
                         .bindPopup(
-                            "<b>Kantor:</b> {{ $kelurahan->nama_kelurahan }}"
+                            "<b>Kantor Kelurahan:</b> {{ $kelurahan->nama_kelurahan }}"
                         );
                     markerskelLayer.addLayer(marker); // Tambahkan ke layer marker
                 @endif

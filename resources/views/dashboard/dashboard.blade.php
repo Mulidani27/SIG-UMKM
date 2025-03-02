@@ -42,9 +42,6 @@
                                         {{ $wilayah->umkms_count ?? 0 }}
                                     </p>
                                 </div>
-                                <div class="col-12">
-                                    <div id="chart-{{ Str::slug($wilayah->nama_kecamatan) }}"></div>
-                                </div>
                             </div>
                         @endforeach
                     </div>

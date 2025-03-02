@@ -58,6 +58,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label>NIK</label>
                                         </div>
@@ -72,6 +73,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label>Nama Usaha</label>
                                         </div>
@@ -86,6 +88,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label>Jenis Usaha</label>
                                         </div>
@@ -100,6 +103,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label>Kecamatan</label>
                                         </div>
@@ -134,6 +138,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label for="address-horizontal-icon">Alamat</label>
                                         </div>
@@ -147,33 +152,37 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @include('include.mappicker')
-                                        {{-- <div class="col-md-4">
-                                            <label for="password-horizontal-icon">Latitude</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group has-icon-left">
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Latitude" id="latitude" name="latitude">
-                                                    <div class="form-control-icon">
-                                                        <i class="bi bi-geo-alt"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div class="col-md-4">
-                                            <label for="password-horizontal-icon">Longitude</label>
+                                            <label>Latitude</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Longitude" id="longitude" name="longitude">
+                                                    <input type="text" class="form-control" placeholder="Latitude" name="latitude" id="latitude">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-geo-alt"></i>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> --}}
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>Longitude</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Longitude" name="longitude" id="longitude">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-geo-alt"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @include('include.mappicker')
+
                                         <div class="col-md-4" style="margin-top: 12px">
                                             <label for="contact-info-horizontal-icon">Kontak</label>
                                         </div>
@@ -187,6 +196,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label for="address-horizontal-icon">Foto</label>
                                         </div>
@@ -202,7 +212,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>                                        
+                                        </div>
+                                        
                                         <div class="col-12 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                             <button type="reset"

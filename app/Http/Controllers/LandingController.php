@@ -38,7 +38,7 @@ class LandingController extends Controller
     
     public function showUmkmList()
     {
-        $kecamatan = Kecamatan::all();
+        $kecamatan = Kecamatan::withCount('umkms')->get();
         $umkms = Umkm::all();
         
         $dataUmkmPerKecamatan = Kecamatan::leftJoin('umkms', 'kecamatans.id', '=', 'umkms.kecamatan_id')

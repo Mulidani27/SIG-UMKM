@@ -28,16 +28,16 @@
                     <div class="card-content">
                         <div class="card-body">
                             @if (session('success'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('success') }}
-                            </div>
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('success') }}
+                                </div>
                             @endif
                             @if ($errors->any())
-                            <div class="alert alert-danger" role="alert">
-                                @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                                @endforeach
-                            </div>
+                                <div class="alert alert-danger" role="alert">
+                                    @foreach ($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                    @endforeach
+                                </div>
                             @endif 
                             <form class="form form-horizontal" method="POST" action="{{ route('kelurahan.update', $kelurahan->id) }}" enctype="multipart/form-data">
                                 @csrf
@@ -95,7 +95,37 @@
                                         </div>
 
                                         <!-- Map Picker -->
-                                        @include('include.mappicker', ['model' => $kelurahan])
+                                        <div class="col-md-4">
+                                            <label for="latitude">Latitude</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Latitude" id="latitude" name="latitude" value="{{ old('latitude', $kelurahan->latitude ?? '') }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-geo-alt"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-md-4">
+                                            <label for="longitude">Longitude</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Longitude" id="longitude" name="longitude" value="{{ old('longitude', $kelurahan->longitude ?? '') }}">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-geo-alt"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @include('include.mappicker', [
+                                            'latitude' => $kelurahan->latitude,
+                                            'longitude' => $kelurahan->longitude
+                                        ])
 
                                         <!-- Keterangan -->
                                         <div class="col-md-4" style="margin-top: 12px">

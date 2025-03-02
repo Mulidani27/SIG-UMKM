@@ -22,7 +22,7 @@ class KecamatanController extends Controller
     {
         $validatedData = $request->validate([
             'nama_kecamatan' => 'required|string',
-            'geojson'        => 'nullable|file|mimes:json',
+            'geojson'        => 'required|file|mimes:json',
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
             'batas_wilayah'  => 'nullable|string',

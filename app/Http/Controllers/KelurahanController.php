@@ -33,8 +33,8 @@ class KelurahanController extends Controller
     {
         $validatedData = $request->validate([
             'nama_kelurahan' => 'required|string|unique:kelurahans,nama_kelurahan',
-            'kecamatan_id'   => 'nullable|exists:kecamatans,id',
-            'geojson'        => 'nullable|file|mimes:json|max:2048',
+            'kecamatan_id'   => 'required|exists:kecamatans,id',
+            'geojson'        => 'required|file|mimes:json|max:2048',
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
             'batas_wilayah'  => 'nullable|string',

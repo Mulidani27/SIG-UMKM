@@ -49,13 +49,14 @@
                                         <div class="col-md-8">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Nama Kelurahan" id="nama_kelurahan" name="nama_kelurahan" required>
+                                                    <input type="text" class="form-control" placeholder="Nama Kelurahan" id="nama_kelurahan" name="nama_kelurahan">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-border-style"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label>Nama Kecamatan</label>
                                         </div>
@@ -74,12 +75,41 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <label>Upload File GeoJSON</label>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group">
-                                                <input type="file" class="form-control" name="geojson" accept=".geojson" required>
+                                                <input type="file" class="form-control" name="geojson" accept=".geojson">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>Latitude</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Latitude" name="latitude" id="latitude">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-geo-alt"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>Longitude</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-icon-left">
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Longitude" name="longitude" id="longitude">
+                                                    <div class="form-control-icon">
+                                                        <i class="bi bi-geo-alt"></i>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -91,13 +121,14 @@
                                         <div class="col-md-8" style="margin-top: 12px">
                                             <div class="form-group has-icon-left">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control" placeholder="Batas Wilayah" id="batas_wilayah" name="batas_wilayah" required>
+                                                    <input type="text" class="form-control" placeholder="Batas Wilayah" id="batas_wilayah" name="batas_wilayah">
                                                     <div class="form-control-icon">
                                                         <i class="bi bi-info-circle"></i>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-12 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                             <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>

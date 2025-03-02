@@ -55,7 +55,38 @@
                             </div>
                         </div>
 
-                        @include('include.mappicker', ['model' => $kecamatan])
+                        <!-- Map Picker -->
+                        <div class="col-md-4">
+                            <label for="latitude">Latitude</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group has-icon-left">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Latitude" id="latitude" name="latitude" value="{{ old('latitude', $kec->latitude ?? '') }}">
+                                    <div class="form-control-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <label for="longitude">Longitude</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group has-icon-left">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Longitude" id="longitude" name="longitude" value="{{ old('longitude', $kec->longitude ?? '') }}">
+                                    <div class="form-control-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @include('include.mappicker', [
+                            'latitude' => $kec->latitude,
+                            'longitude' => $kec->longitude
+                        ])
 
                         <div class="col-md-4" style="margin-top: 12px">
                             <label>Batas Wilayah</label>

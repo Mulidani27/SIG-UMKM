@@ -57,7 +57,7 @@
             <div class="container">
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h4 style="text-align: center">Data UMKM Sasirangan di Kota Banjarmasin</h4>
+                        <h4 style="text-align: center">Statistik UMKM Sasirangan di Kota Banjarmasin</h4>
                     </div>
                     <div class="card-body">
                         <section class="section">
@@ -85,6 +85,47 @@
                                 </div>
                             </div>
                         </section>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4 style="text-align: center">Jumlah UMKM Sasirangan per Kecamatan di Kota Banjarmasin</h4>
+                        <section class="section">
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Nama Kecamatan</th>
+                                                <th>Jumlah UMKM</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($kecamatan as $index => $wilayah)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $wilayah->nama_kecamatan }}</td>
+                                                    <td class="text-end">{{ $wilayah->umkms_count ?? 0 }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4 style="text-align: center">Daftar UMKM Sasirangan di Kota Banjarmasin</h4>
                         <section class="section">
                             <div class="card">
                                 <div class="card-body">
